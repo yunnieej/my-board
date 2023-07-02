@@ -1,13 +1,17 @@
 package project.myboard.entity;
 
 import com.fasterxml.jackson.databind.ser.Serializers;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-
+@Getter
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardEntity extends BaseEntity {
 
     @Id
@@ -34,4 +38,14 @@ public class BoardEntity extends BaseEntity {
     @Column
     private int view;
 
+
+    @Builder
+    public BoardEntity(Long id, String writer, String password, String title, String content, int view) {
+        this.id = id;
+        this.writer = writer;
+        this.password = password;
+        this.title = title;
+        this.content = content;
+        this.view = view;
+    }
 }

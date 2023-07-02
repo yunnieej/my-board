@@ -17,4 +17,6 @@ public class BoardController {
     public String post(){
         return "board/post.html";
     }
+
+
 }
