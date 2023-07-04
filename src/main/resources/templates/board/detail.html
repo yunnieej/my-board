@@ -1,10 +1,118 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8" />
+    <title>게시판 - 상세페이지</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css" />
 </head>
 <body>
-$END$
+<header th:insert="fragments/header.html"></header>
+<div class="container">
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>id</th>
+                <td th:text="${boardDto.id}"></td>
+            </tr>
+            <tr>
+                <th>title</th>
+                <td th:text="${boardDto.title}"></td>
+            </tr>
+            <tr>
+                <th>writer</th>
+                <td th:text="${boardDto.writer}"></td>
+            </tr>
+            <tr>
+                <th>date</th>
+<!--                <td th:text="${boardDto.createdTime}"></td>-->
+                <td th:text="${#temporals.format(boardDto.createdTime, 'yyyy-MM-dd HH:mm')}"></td>
+            </tr>
+
+            <tr>
+                <th>contents</th>
+                <td th:text="${boardDto.content}"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class = "row-">
+
+</div>
+
+<div class="row">
+    <div class="col-md-3 ml-md-auto"></div>
+    <div class="col-auto">
+        <a class="btn text-secondary" th:href="@{/post/update/{id}(id=${boardDto.id})}" role="button">수정</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3 ml-md-auto"></div>
+    <div class="col-auto">
+        <a class="btn text-secondary" th:href="@{/post/delete/{id}(id=${boardDto.id})}" role="button">삭제</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3 ml-md-auto"></div>
+    <div class="col-auto">
+        <a class="btn text-secondary" th:href="@{/}" role="button">목록으로 가기</a>
+    </div>
+</div>
+
+<script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </body>
 </html>
+
+<!--=======================================-->
+<!--    <table>-->
+<!--        <tr>-->
+<!--            <th>id</th>-->
+<!--            <td th:text="${boardDto.id}"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <th>title</th>-->
+<!--            <td th:text="${boardDto.title}"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <th>writer</th>-->
+<!--            <td th:text="${boardDto.writer}"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <th>date</th>-->
+<!--            <td th:text="${boardDto.createdTime}"></td>-->
+<!--        </tr>-->
+
+<!--        <tr>-->
+<!--            <th>contents</th>-->
+<!--            <td th:text="${boardDto.content}"></td>-->
+<!--        </tr>-->
+<!--    </table>-->
+
+<!--    <div class = "row-">-->
+
+<!--    </div>-->
+
+<!--    <div class="row">-->
+<!--        <div class="col-md-3 ml-md-auto"></div>-->
+<!--        <div class="col-auto">-->
+<!--            <a class="btn text-secondary" th:href="@{/post/update/{id}(id=${boardDto.id})}" role="button">수정</a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="row">-->
+<!--        <div class="col-md-3 ml-md-auto"></div>-->
+<!--        <div class="col-auto">-->
+<!--            <a class="btn text-secondary" th:href="@{/post/delete/{id}(id=${boardDto.id})}" role="button">삭제</a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="row">-->
+<!--        <div class="col-md-3 ml-md-auto"></div>-->
+<!--        <div class="col-auto">-->
+<!--            <a class="btn text-secondary" th:href="@{/}" role="button">목록으로 가기</a>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--<script src="/webjars/jquery/3.5.1/jquery.min.js"></script>-->
+<!--<script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>-->
+<!--</body>-->
+<!--</html>-->

@@ -18,31 +18,32 @@
         </tr>
         </thead>
         <tbody>
-        <tr class="text-center" th:each="post : ${postList}">
-            <th scope="row">
-                <span th:text="${post.id}"></span>
-            </th>
-            <td>
-                <a th:href="@{'/post/' + ${post.id}}">
-                    <span th:text="${post.title}"></span>
-                </a>
-            </td>
-            <td>
-                <span th:text="${post.author}"></span>
-            </td>
-            <td>
-                <span th:text="${#temporals.format(post.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
-            </td>
-        </tr>
+            <tr class="text-center" th:each="board : ${boardList}">
+                <th scope="row">
+                    <span th:text="${board.id}"></span>
+                </th>
+                <td>
+                    <a th:href="@{|/post/${board.id}|}">
+                        <span th:text="${board.title}"></span>
+                    </a>
+                </td>
+                <td>
+                    <span th:text="${board.writer}"></span>
+                </td>
+                <td>
+                    <span th:text="${#temporals.format(board.createdTime, 'yyyy-MM-dd HH:mm')}"></span>
+                </td>
+            </tr>
         </tbody>
     </table>
     <div class="row">
         <div class="col-auto mr-auto"></div>
         <div class="col-auto">
-            <a class="btn btn-primary" th:href="@{/post}" role="button">글쓰기</a>
+            <a class="btn btn-dark" th:href="@{/post}" role="button">글쓰기</a>
         </div>
     </div>
 </div>
+
 <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </body>
