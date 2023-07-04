@@ -10,10 +10,10 @@
 <div class="container">
     <table class="table">
         <tbody>
-            <tr>
-                <th>id</th>
-                <td th:text="${boardDto.id}"></td>
-            </tr>
+<!--            <tr>-->
+<!--                <th>id</th>-->
+<!--                <td th:text="${boardDto.id}"></td>-->
+<!--            </tr>-->
             <tr>
                 <th>title</th>
                 <td th:text="${boardDto.title}"></td>
@@ -36,28 +36,31 @@
     </table>
 </div>
 
+
+<!--=====================================-->
 <div class = "row-">
 
 </div>
 
 <div class="row">
-    <div class="col-md-3 ml-md-auto"></div>
-    <div class="col-auto">
-        <a class="btn text-secondary" th:href="@{/post/update/{id}(id=${boardDto.id})}" role="button">수정</a>
+    <div class="col text-center">
+        <a class="btn btn-dark" th:href="@{/post/update/{id}(id=${boardDto.id})}" role="button">수정</a>
+        <a class="btn btn-dark" th:href="@{/post/delete/{id}(id=${boardDto.id})}" role="button">삭제</a>
+        <a class="btn btn-dark" th:href="@{/}" role="button">목록으로 가기</a>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-3 ml-md-auto"></div>
-    <div class="col-auto">
-        <a class="btn text-secondary" th:href="@{/post/delete/{id}(id=${boardDto.id})}" role="button">삭제</a>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-3 ml-md-auto"></div>
-    <div class="col-auto">
-        <a class="btn text-secondary" th:href="@{/}" role="button">목록으로 가기</a>
-    </div>
-</div>
+<!--<div class="row">-->
+<!--    <div class="col-md-3 ml-md-auto"></div>-->
+<!--    <div class="col-auto">-->
+<!--        <a class="btn btn-dark" th:href="@{/post/delete/{id}(id=${boardDto.id})}" role="button">삭제</a>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<div class="row">-->
+<!--    <div class="col-md-3 ml-md-auto"></div>-->
+<!--    <div class="col-auto">-->
+<!--        <a class="btn btn-dark" th:href="@{/}" role="button">목록으로 가기</a>-->
+<!--    </div>-->
+<!--</div>-->
 
 <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>

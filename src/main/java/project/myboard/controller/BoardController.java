@@ -24,7 +24,7 @@ public class BoardController {
     // 메인화면, 게시판 리스트들을 볼 수 있음
     @GetMapping("/")
     public String list(Model model, @PageableDefault(page = 0, size = 5, sort="id", direction= Sort.Direction.DESC) Pageable pageable){
-        List<BoardDto> boardDtoList = boardService.findAll(pageable);
+        Page<BoardDto> boardDtoList = boardService.findAll(pageable);
         model.addAttribute("boardList", boardDtoList);
         return "board/list.html";
     }

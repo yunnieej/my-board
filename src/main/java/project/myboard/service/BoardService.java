@@ -2,6 +2,7 @@ package project.myboard.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import project.myboard.dto.BoardDto;
@@ -35,8 +36,8 @@ public class BoardService {
     }
 
     @Transactional
-    public List<BoardDto> findAll(Pageable pageable){
-        List<BoardEntity> boardEntityList = boardRepository.findAll(); // boardList 가져오기 (Entity 형태)
+    public Page<BoardDto> findAll(Pageable pageable){
+        Page<BoardEntity> boardEntityList = boardRepository.findAll(pageable); // boardList 가져오기 (Entity 형태)
 //        System.out.println("findAll() 가져오기" + boardEntityList);
 //        System.out.println(boardEntityList.size());
         ArrayList<BoardDto> boardDtoList = new ArrayList<>(); // boardDto 로 변환하기
@@ -57,7 +58,8 @@ public class BoardService {
             boardDtoList.add(boardDto); // 변환된 것 하나씩 넣기
         }
 
-        return boardDtoList;
+//        return boardDtoList;
+        return new PageImpl<>(boardDtoList, pageable, boardEntityList.getTotalElements());
     }
 
     @Transactional
