@@ -1,9 +1,6 @@
 package project.myboard.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import project.myboard.dto.BoardDto;
 import project.myboard.entity.BoardEntity;
@@ -22,24 +19,16 @@ public class BoardService {
     // repository -> entity 클래스를 받음
     private final BoardRepository boardRepository;
 
-    // requiredAgrsConstructor 을 하면 생성자 자동 생성해서 아래 코드 없어도 됨.
-//    public BoardService(BoardRepository boardRepository) {
-//        this.boardRepository = boardRepository;
-//    }
-
     // 저장된 boardDto를 데이터베이스에 넣어야하기 때문에 entity로 바꿔야하는 과정 거쳐야함
     @Transactional
     public void saveBoard(BoardDto boardDto){
         BoardEntity boardEntity = boardDto.toEntity();
         boardRepository.save(boardEntity);
-//        return boardRepository.save(boardDto.toEntity()).getId();
     }
 
     @Transactional
-    public Page<BoardDto> findAll(Pageable pageable){
-        Page<BoardEntity> boardEntityList = boardRepository.findAll(pageable); // boardList 가져오기 (Entity 형태)
-//        System.out.println("findAll() 가져오기" + boardEntityList);
-//        System.out.println(boardEntityList.size());
+    public List<BoardDto> findAll(){
+        List<BoardEntity> boardEntityList = boardRepository.findAll(); // boardList 가져오기 (Entity 형태)
         ArrayList<BoardDto> boardDtoList = new ArrayList<>(); // boardDto 로 변환하기
 
         // dto로 변환해서 arrayList에 넣는 작업
@@ -58,9 +47,9 @@ public class BoardService {
             boardDtoList.add(boardDto); // 변환된 것 하나씩 넣기
         }
 
-//        return boardDtoList;
-        return new PageImpl<>(boardDtoList, pageable, boardEntityList.getTotalElements());
+        return boardDtoList;
     }
+
 
     @Transactional
     public BoardDto findById(Long id){
@@ -88,17 +77,8 @@ public class BoardService {
     @Transactional
     public void update(Long id, BoardDto boardDto){
 
-        BoardEntity boardEntity = boardRepository.findById(id).get().builder()
-                .id(boardDto.getId())
-                .writer(boardDto.getWriter())
-                .password(boardDto.getPassword())
-                .title(boardDto.getTitle())
-                .content(boardDto.getContent())
-                .build();
-
+        BoardEntity boardEntity = boardRepository.findById(id).get();
         boardEntity.updateBoard(boardDto);
-        boardRepository.save(boardEntity);
-
     }
 
     // 삭제

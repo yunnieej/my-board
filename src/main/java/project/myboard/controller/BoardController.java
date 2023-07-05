@@ -14,7 +14,6 @@ import java.util.List;
 
 @Controller
 public class BoardController {
-
     private final BoardService boardService;
 
     public BoardController(BoardService boardService) {
@@ -23,8 +22,8 @@ public class BoardController {
 
     // 메인화면, 게시판 리스트들을 볼 수 있음
     @GetMapping("/")
-    public String list(Model model, @PageableDefault(page = 0, size = 5, sort="id", direction= Sort.Direction.DESC) Pageable pageable){
-        Page<BoardDto> boardDtoList = boardService.findAll(pageable);
+    public String list(Model model){
+        List<BoardDto> boardDtoList = boardService.findAll();
         model.addAttribute("boardList", boardDtoList);
         return "board/list.html";
     }
@@ -65,8 +64,6 @@ public class BoardController {
         return "redirect:/post/{id}";
     }
 
-
-//    @GetMapping("/post/{id}/delete")
     @GetMapping("/post/delete/{id}")
     public String updateBoard(@PathVariable Long id){
         boardService.deleteById(id);

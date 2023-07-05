@@ -19,9 +19,9 @@
         </tr>
         </thead>
         <tbody>
-            <tr class="text-center" th:each="board : ${boardList}">
+            <tr class="text-center" th:each="board , count : ${boardList}">
                 <th scope="row">
-                    <span th:text="${board.id}"></span>
+                    <span th:text="${count.count}"></span>
                 </th>
                 <td>
                     <a th:href="@{|/post/${board.id}|}">
@@ -45,42 +45,9 @@
     </div>
 
 
-    <div class="col text-center" th:if="${!boardList.isEmpty()}">
-        <ul class="pagination"
-            th:with="
-                    pageNumber = ${boardList.pageable.pageNumber},
-                    pageSize = ${boardList.pageable.pageSize},
-                    totalPages = ${boardList.totalPages},
-                    startPage = ${T(java.lang.Math).floor(pageNumber / pageSize) * pageSize + 1},
-                    tempEndPage = ${startPage + pageSize - 1},
-                    endPage = (${tempEndPage < totalPages ? tempEndPage : totalPages})">
-
-            <li th:classappend="${boardList.first} ? 'disabled'" class="page-item">
-                <a class="page-link" th:href="${boardList.first} ? '#' : @{/(page=${pageNumber-1})}">
-                    <span aria-hidden="true">&lt;</span>
-                </a>
-            </li>
-
-            <li th:each="page: ${#numbers.sequence(startPage, endPage)}" th:classappend="${page == pageNumber} ? 'active'" class="page-item">
-                <a th:text="${page}" class="page-link" th:href="@{/(page=${page - 1})}"></a>
-            </li>
-
-            <li th:classappend="${boardList.last} ? 'disabled'" class="page-item">
-                <a class="page-link" th:href="${boardList.last} ? '#' : @{/(page=${pageNumber+1})}" aria-label="Next">
-                    <span aria-hidden="true">&gt;</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-
-</div>
-
-<!--<div class="row">-->
-<!--    <div class="col text-center">-->
-
-<!--        <div th:if="${!boardList.isEmpty()}">-->
-<!--            <ul class="pagination"-->
-<!--                th:with="-->
+<!--    <div class="col text-center" th:if="${!boardList.isEmpty()}">-->
+<!--        <ul class="pagination"-->
+<!--            th:with="-->
 <!--                    pageNumber = ${boardList.pageable.pageNumber},-->
 <!--                    pageSize = ${boardList.pageable.pageSize},-->
 <!--                    totalPages = ${boardList.totalPages},-->
@@ -88,25 +55,25 @@
 <!--                    tempEndPage = ${startPage + pageSize - 1},-->
 <!--                    endPage = (${tempEndPage < totalPages ? tempEndPage : totalPages})">-->
 
-<!--                <li th:classappend="${boardList.first} ? 'disabled'" class="page-item">-->
-<!--                    <a class="page-link" th:href="${boardList.first} ? '#' : @{/(page=${pageNumber-1})}">-->
-<!--                        <span aria-hidden="true">&lt;</span>-->
-<!--                    </a>-->
-<!--                </li>-->
+<!--            <li th:classappend="${boardList.first} ? 'disabled'" class="page-item">-->
+<!--                <a class="page-link" th:href="${boardList.first} ? '#' : @{/(page=${pageNumber-1})}">-->
+<!--                    <span aria-hidden="true">&lt;</span>-->
+<!--                </a>-->
+<!--            </li>-->
 
-<!--                <li th:each="page: ${#numbers.sequence(startPage, endPage)}" th:classappend="${page == pageNumber} ? 'active'" class="page-item">-->
-<!--                    <a th:text="${page}" class="page-link" th:href="@{/(page=${page - 1})}"></a>-->
-<!--                </li>-->
+<!--            <li th:each="page: ${#numbers.sequence(startPage, endPage)}" th:classappend="${page == pageNumber} ? 'active'" class="page-item">-->
+<!--                <a th:text="${page}" class="page-link" th:href="@{/(page=${page - 1})}"></a>-->
+<!--            </li>-->
 
-<!--                <li th:classappend="${boardList.last} ? 'disabled'" class="page-item">-->
-<!--                    <a class="page-link" th:href="${boardList.last} ? '#' : @{/(page=${pageNumber+1})}" aria-label="Next">-->
-<!--                        <span aria-hidden="true">&gt;</span>-->
-<!--                    </a>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--        </div>-->
+<!--            <li th:classappend="${boardList.last} ? 'disabled'" class="page-item">-->
+<!--                <a class="page-link" th:href="${boardList.last} ? '#' : @{/(page=${pageNumber-1})}" aria-label="Next">-->
+<!--                    <span aria-hidden="true">&gt;</span>-->
+<!--                </a>-->
+<!--            </li>-->
+<!--        </ul>-->
 <!--    </div>-->
-<!--</div>-->
+
+</div>
 <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </body>

@@ -54,10 +54,10 @@ public class BoardEntity extends BaseEntity {
     }
 
     public void updateBoard(BoardDto boardDto){
-        this.title = title;
-        this.password =password;
-        this.writer = writer;
-        this.content = content;
+        this.title = boardDto.getTitle();
+        this.password = boardDto.getPassword();
+        this.writer = boardDto.getWriter();
+        this.content = boardDto.getContent();
 
     }
 }
