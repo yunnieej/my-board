@@ -27,8 +27,13 @@ public class BoardService {
     }
 
     @Transactional
-    public List<BoardDto> findAll(){
+    public List<BoardDto> findAllList(){
+        // 여기서 사용하는 findAll() -> SimpleJpaRepository를 사용
         List<BoardEntity> boardEntityList = boardRepository.findAll(); // boardList 가져오기 (Entity 형태)
+        for (BoardEntity b : boardEntityList){
+            System.out.println();
+        }
+
         ArrayList<BoardDto> boardDtoList = new ArrayList<>(); // boardDto 로 변환하기
 
         // dto로 변환해서 arrayList에 넣는 작업

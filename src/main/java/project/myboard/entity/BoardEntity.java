@@ -55,7 +55,6 @@ public class BoardEntity extends BaseEntity {
 
     public void updateBoard(BoardDto boardDto){
         this.title = boardDto.getTitle();
-        this.password = boardDto.getPassword();
         this.writer = boardDto.getWriter();
         this.content = boardDto.getContent();
 

@@ -45,10 +45,4 @@ public class BoardDto {
         this.modifiedTime = modifiedTime;
     }
 
-    public void updateBoard(BoardDto boardDto){
-        this.title = boardDto.title;
-        this.password = boardDto.password;
-        this.writer = boardDto.writer;
-        this.content = boardDto.content;
-    }
 }

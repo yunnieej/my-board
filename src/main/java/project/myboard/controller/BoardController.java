@@ -23,7 +23,7 @@ public class BoardController {
     // 메인화면, 게시판 리스트들을 볼 수 있음
     @GetMapping("/")
     public String list(Model model){
-        List<BoardDto> boardDtoList = boardService.findAll();
+        List<BoardDto> boardDtoList = boardService.findAllList();
         model.addAttribute("boardList", boardDtoList);
         return "board/list.html";
     }
