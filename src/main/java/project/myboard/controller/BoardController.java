@@ -6,11 +6,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import project.myboard.dto.BoardDto;
 import project.myboard.service.BoardService;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class BoardController {
@@ -34,11 +38,24 @@ public class BoardController {
         return "board/post.html";
     }
 
+
+//    @PostMapping("/post")
+//    public String save(@ModelAttribute BoardDto boardDto){
+//        boardService.saveBoard(boardDto);
+//        return "redirect:/";
+//    }
+
+
     @PostMapping("/post")
-    public String save(@ModelAttribute BoardDto boardDto){
+    public String save(@Valid BoardDto boardDto, BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            return "board/post.html";
+        }
+
         boardService.saveBoard(boardDto);
         return "redirect:/";
     }
+
 
     // 상세 게시글 보기
     @GetMapping("/post/{id}")

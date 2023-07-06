@@ -2,14 +2,14 @@ package project.myboard.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 import project.myboard.dto.BoardDto;
 import project.myboard.entity.BoardEntity;
 import project.myboard.repository.BoardRepository;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 // service 단에서 entity로 바꿔줘야함
 @Service
@@ -91,4 +91,21 @@ public class BoardService {
     public void deleteById(Long id){
         boardRepository.deleteById(id);
     }
+
+
+
+
+
+
+//    @Transactional
+//    // 게시글 작성 시 유효성 체크하기
+//    public Map<String, String> validateHandling(Errors errors){
+//        Map<String, String> validatorResult = new HashMap<>();
+//
+//        for(FieldError error : errors.getFieldErrors()){
+//            String validKeyName = String.format("valid_%s", error.getField());
+//            validatorResult.put(validKeyName, error.getDefaultMessage());
+//        }
+//        return validatorResult;
+//    }
 }

@@ -35,13 +35,8 @@ public class BoardEntity extends BaseEntity {
     private String title;
 
     // 내용
-
     @Column(columnDefinition = "TEXT", length=500, nullable = false)
     private String content;
-
-//    // 조회수
-//    @Column
-//    private int view;
 
 
     @Builder

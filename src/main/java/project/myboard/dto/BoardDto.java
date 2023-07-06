@@ -4,6 +4,7 @@ import lombok.*;
 import net.bytebuddy.asm.Advice;
 import project.myboard.entity.BoardEntity;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Getter
@@ -14,6 +15,8 @@ public class BoardDto {
     private Long id;
     private String writer;
     private String password;
+
+    @NotBlank(message = "제목은 필수 입력값입니다.")
     private String title;
     private String content;
     private LocalDateTime createdTime;
