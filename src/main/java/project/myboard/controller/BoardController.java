@@ -38,23 +38,20 @@ public class BoardController {
         return "board/post.html";
     }
 
-
-//    @PostMapping("/post")
-//    public String save(@ModelAttribute BoardDto boardDto){
-//        boardService.saveBoard(boardDto);
-//        return "redirect:/";
-//    }
-
-
     @PostMapping("/post")
     public String save(@Valid BoardDto boardDto, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             return "board/post.html";
         }
-
         boardService.saveBoard(boardDto);
         return "redirect:/";
     }
+
+    //    @PostMapping("/post")
+//    public String save(@ModelAttribute BoardDto boardDto){
+//        boardService.saveBoard(boardDto);
+//        return "redirect:/";
+//    }
 
 
     // 상세 게시글 보기
@@ -77,10 +74,10 @@ public class BoardController {
     @PutMapping("/post/update/{id}")
     public String update(Long id, BoardDto boardDto){
         boardService.update(id, boardDto);
-
         return "redirect:/post/{id}";
     }
 
+    //게시글 삭제
     @GetMapping("/post/delete/{id}")
     public String updateBoard(@PathVariable Long id){
         boardService.deleteById(id);

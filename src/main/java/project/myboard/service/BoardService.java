@@ -30,9 +30,6 @@ public class BoardService {
     public List<BoardDto> findAllList(){
         // 여기서 사용하는 findAll() -> SimpleJpaRepository를 사용
         List<BoardEntity> boardEntityList = boardRepository.findAll(); // boardList 가져오기 (Entity 형태)
-        for (BoardEntity b : boardEntityList){
-            System.out.println();
-        }
 
         ArrayList<BoardDto> boardDtoList = new ArrayList<>(); // boardDto 로 변환하기
 
@@ -51,7 +48,6 @@ public class BoardService {
 
             boardDtoList.add(boardDto); // 변환된 것 하나씩 넣기
         }
-
         return boardDtoList;
     }
 
@@ -81,9 +77,9 @@ public class BoardService {
     // 수정
     @Transactional
     public void update(Long id, BoardDto boardDto){
-
         BoardEntity boardEntity = boardRepository.findById(id).get();
         boardEntity.updateBoard(boardDto);
+
     }
 
     // 삭제
