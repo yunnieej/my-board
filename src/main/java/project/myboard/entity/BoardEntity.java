@@ -1,57 +1,55 @@
 package project.myboard.entity;
-
-import com.fasterxml.jackson.databind.ser.Serializers;
+import com.sun.istack.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicInsert;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import project.myboard.dto.BoardDto;
+import net.bytebuddy.asm.Advice;
+import project.myboard.dto.BoardUpdateDto;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
-@DynamicInsert
-@Getter
+@NoArgsConstructor
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EntityListeners(AuditingEntityListener.class)
-public class BoardEntity extends BaseEntity {
+@Getter
+@Table(name="board")
+public class BoardEntity extends BaseEntity{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //auto-increment
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 작성자
+    @NotNull
     @Column(nullable = false)
     private String writer;
 
-    // 비밀번호
-    @Column(nullable = false)
-    private String password;
-
-    // 제목
+    @NotNull
     @Column(length = 500, nullable = false)
     private String title;
 
-    // 내용
-    @Column(columnDefinition = "TEXT", length=500, nullable = false)
+    @Column(columnDefinition = "text", nullable = false)
     private String content;
 
+    @Column
+    private int hits;
 
     @Builder
-    public BoardEntity(Long id, String writer, String password, String title, String content) {
-        this.id = id;
+    public BoardEntity(Long id, String writer, String title, String content, int hits){
+        this.id  = id;
         this.writer = writer;
-        this.password = password;
         this.title = title;
         this.content = content;
+        this.hits = hits;
     }
 
-    public void updateBoard(BoardDto boardDto){
-        this.title = boardDto.getTitle();
-        this.writer = boardDto.getWriter();
-        this.content = boardDto.getContent();
-
+    public void update(BoardUpdateDto boardUpdateDto){
+        this.title = boardUpdateDto.getTitle();
+        this.content = boardUpdateDto.getContent();
     }
+
+    public void updateHits(){
+        this.hits = this.hits+1;
+    }
+
 }

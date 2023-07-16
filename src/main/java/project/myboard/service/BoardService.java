@@ -2,9 +2,9 @@ package project.myboard.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
-import project.myboard.dto.BoardDto;
+import project.myboard.dto.BoardRequestDto;
+import project.myboard.dto.BoardResponseDto;
+import project.myboard.dto.BoardUpdateDto;
 import project.myboard.entity.BoardEntity;
 import project.myboard.repository.BoardRepository;
 
@@ -21,65 +21,72 @@ public class BoardService {
 
     // 저장된 boardDto를 데이터베이스에 넣어야하기 때문에 entity로 바꿔야하는 과정 거쳐야함
     @Transactional
-    public void saveBoard(BoardDto boardDto){
-        BoardEntity boardEntity = boardDto.toEntity();
-        boardRepository.save(boardEntity);
+    public void saveBoard(BoardRequestDto boardRequestDto){
+        if(boardRequestDto.getWriter().isBlank() || boardRequestDto.getTitle().isBlank()){
+            throw new IllegalStateException("필수 입력값 (작성자, 제목)값이 없습니다.");
+        }
+        else if(boardRequestDto.getContent().matches("[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]")){
+            throw new IllegalStateException("내용에는 특수문자가 들어갈 수 없습니다.");
+        }
+
+        boardRepository.save(boardRequestDto.toEntity());
     }
 
     @Transactional
-    public List<BoardDto> findAllList(){
+    public List<BoardResponseDto> findAll(){
         // 여기서 사용하는 findAll() -> SimpleJpaRepository를 사용
         List<BoardEntity> boardEntityList = boardRepository.findAll(); // boardList 가져오기 (Entity 형태)
 
-        ArrayList<BoardDto> boardDtoList = new ArrayList<>(); // boardDto 로 변환하기
+        ArrayList<BoardResponseDto> boardDtoList = new ArrayList<>(); // boardDto 로 변환하기
 
         // dto로 변환해서 arrayList에 넣는 작업
         for (BoardEntity board : boardEntityList){
 
-            BoardDto boardDto = BoardDto.builder()
+            BoardResponseDto boardResponseDto = BoardResponseDto.builder()
                     .id(board.getId())
                     .writer(board.getWriter())
-                    .password(board.getPassword())
                     .title(board.getTitle())
                     .content(board.getContent())
                     .createdTime(board.getCreatedTime())
                     .modifiedTime(board.getModifiedTime())
+                    .hits(board.getHits())
                     .build();
 
-            boardDtoList.add(boardDto); // 변환된 것 하나씩 넣기
+            boardDtoList.add(boardResponseDto); // 변환된 것 하나씩 넣기
         }
         return boardDtoList;
     }
 
 
+    // 상세 게시글 보기
     @Transactional
-    public BoardDto findById(Long id){
+    public BoardResponseDto findById(Long id){
         Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
-        BoardEntity boardEntity = optionalBoardEntity.get();
-        if (optionalBoardEntity.isPresent()){
-            BoardDto boardDto = BoardDto.builder()
-                    .id(boardEntity.getId())
-                    .writer(boardEntity.getWriter())
-                    .password(boardEntity.getPassword())
-                    .title(boardEntity.getTitle())
-                    .content(boardEntity.getContent())
-                    .createdTime(boardEntity.getCreatedTime())
-                    .modifiedTime(boardEntity.getModifiedTime())
-                    .build();
 
-            return boardDto;
+        if (!optionalBoardEntity.isPresent()){
+            throw new NoSuchElementException("해당 순번이 존재하지 않습니다.");
         }
-        else{
-            return null;
-        }
+
+        BoardEntity boardEntity = optionalBoardEntity.get();
+        boardEntity.updateHits();
+        BoardResponseDto boardResponseDto = BoardResponseDto.builder()
+                .id(boardEntity.getId())
+                .title(boardEntity.getTitle())
+                .writer(boardEntity.getWriter())
+                .content(boardEntity.getContent())
+                .createdTime(boardEntity.getCreatedTime())
+                .modifiedTime(boardEntity.getModifiedTime())
+                .hits(boardEntity.getHits())
+                .build();
+
+        return boardResponseDto;
     }
 
     // 수정
     @Transactional
-    public void update(Long id, BoardDto boardDto){
+    public void update(Long id, BoardUpdateDto boardUpdateDto){
         BoardEntity boardEntity = boardRepository.findById(id).get();
-        boardEntity.updateBoard(boardDto);
-
+        boardEntity.update(boardUpdateDto);
     }
 
     // 삭제
@@ -88,7 +95,29 @@ public class BoardService {
         boardRepository.deleteById(id);
     }
 
+    //keyword로 검색
+    @Transactional
+    public List<BoardResponseDto> searchByKeyword(String keyword){
+        List<BoardEntity> boardEntities = boardRepository.findByTitleContaining(keyword);
+        ArrayList<BoardResponseDto> boardResponseDtos = new ArrayList<>();
+        // dto로 변환해서 arrayList에 넣는 작업
+        for (BoardEntity board : boardEntities){
 
+            BoardResponseDto boardResponseDto = BoardResponseDto.builder()
+                    .id(board.getId())
+                    .writer(board.getWriter())
+                    .title(board.getTitle())
+                    .content(board.getContent())
+                    .createdTime(board.getCreatedTime())
+                    .modifiedTime(board.getModifiedTime())
+                    .hits(board.getHits())
+                    .build();
+
+            boardResponseDtos.add(boardResponseDto); // 변환된 것 하나씩 넣기
+        }
+        return boardResponseDtos;
+
+    }
 
 
 
