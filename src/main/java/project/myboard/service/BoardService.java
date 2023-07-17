@@ -1,10 +1,7 @@
 package project.myboard.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import project.myboard.dto.BoardRequestDto;
 import project.myboard.dto.BoardResponseDto;
@@ -62,11 +59,12 @@ public class BoardService {
         return boardDtoList;
     }
     */
-    @Transactional
+    @Transactional()
     public Page<BoardResponseDto> findPage(Pageable pageable){
         int page = (pageable.getPageNumber() == 0 ? 0 : (pageable.getPageNumber()-1));
-        Page<BoardEntity> all = boardRepository.findAll(PageRequest.of(page, 3, Sort.Direction.DESC, "id"));
 
+        Page<BoardEntity> all = boardRepository.findAll(PageRequest.of(page, 3, Sort.Direction.DESC, "id"));
+        // new PageImpl<BoardResponseDto>(list, PageRequest.of(currentPage, pageSize), all.size());
         Page<BoardResponseDto> allDto = all.map(m -> BoardResponseDto.builder()
                 .id(m.getId())
                 .writer(m.getWriter())
@@ -76,6 +74,7 @@ public class BoardService {
                 .modifiedTime(m.getModifiedTime())
                 .hits(m.getHits())
                 .build());
+
         return allDto;
     }
 
@@ -143,8 +142,9 @@ public class BoardService {
 */
     @Transactional
     public Page<BoardResponseDto> searchByKeyword(String keyword, Pageable pageable){
+        // pageable의 페이지 -> 0부터 시작. 사용자가 보려는 페이지에서 1 빼야함. (게시판 첫페이지는 1부터 시작하기 때문에) page=2면 게시판에서는 첫페이지
         int page = (pageable.getPageNumber() == 0 ? 0 : (pageable.getPageNumber()-1));
-        Page<BoardEntity> byTitleContainingPage = boardRepository.findByTitleContaining(keyword, pageable);
+        Page<BoardEntity> byTitleContainingPage = boardRepository.findByTitleContaining(keyword, PageRequest.of(page, 3, Sort.Direction.DESC, "id"));
 
         Page<BoardResponseDto> allDto = byTitleContainingPage.map(m -> BoardResponseDto.builder()
                 .id(m.getId())

@@ -101,7 +101,7 @@ public class BoardController {
 //    }
 
     @GetMapping("/search")
-    public String searchByKeyword(@RequestParam(value="keyword") String keyword, Model model, @PageableDefault(sort = "id", size = 3, page = 1, direction = Sort.Direction.DESC) Pageable pageable){
+    public String searchByKeyword(@RequestParam(value="keyword") String keyword, Model model, @PageableDefault Pageable pageable){
         Page<BoardResponseDto> boardResponseDtos = boardService.searchByKeyword(keyword, pageable);
         model.addAttribute("boardList", boardResponseDtos);
         return "board/list.html";

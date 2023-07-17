@@ -8,7 +8,7 @@
 
 <body>
 <header th:insert="fragments/header.html"></header>
-<div id="wrap">
+<div id="wrap" >
     <div class="container">
         <table class="table">
             <thead class="thead-light">
@@ -42,6 +42,43 @@
                 </tr>
             </tbody>
         </table>
+
+        <!--        페이징 관련 버튼-->
+        <!--        <nav style="text-align: center;">-->
+        <ul class = "pagination"
+            th:with = "start=${T(java.lang.Math).floor(boardList.number/10)*10 + 1},
+                       last=(${start + 9 < boardList.totalPages ? start + 9 : boardList.totalPages})">
+            <!--                첫페이지로 가는 버튼-->
+            <li>
+                <a th:href="@{/search(page=1,keyword=${param.keyword})}" aria-label="First">
+                    <span aria-hidden="true">First</span>
+                </a>
+            </li>
+            <!--                이전 페이지로 가는 버튼-->
+            <li th:class="${boardList.first} ? 'disabled'">
+<!--                현재 페이지 -1 이 자동으로 적용-->
+                <a th:href="${boardList.first} ? '#' :@{/search(page=${boardList.number},keyword=${param.keyword})}" aria-label="Previous">
+                    <span aria-hidden="true">&lt;</span>
+                </a>
+            </li>
+            <!--                페이지 나열하기-->
+            <li th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == boardList.number + 1}? 'pagination_button page-item active' : 'pagination_button page-item'">
+                <a th:text ="${page}" th:href = "@{/search(page=${page}, keyword=${param.keyword})}"></a>
+            </li>
+            <!--                다음 페이지로 가기-->
+            <li th:class = "${boardList.last} ? 'disabled'">
+                <a th:href = "${boardList.last} ? '#' :@{/search(page=${boardList.number + 2},keyword=${param.keyword})}" aria-label = "Next">
+                    <span aria-hidden="true">&gt;</span>
+                </a>
+            </li>
+            <!--                마지막 페이지로 가기-->
+            <li>
+                <a th:href="@{/search(page=${boardList.totalPages},keyword=${param.keyword})}" aria-label="Last">
+                    <span aria-hidden="true">Last</span>
+                </a>
+            </li>
+        </ul>
+
         <div class="row">
             <div class="col-auto mr-auto"></div>
             <div class="col-auto">
@@ -65,32 +102,3 @@
 </div>
 </body>
 </html>
-
-<!--페이징 처리 -->
-<!--    <div class="col text-center" th:if="${!boardList.isEmpty()}">-->
-<!--        <ul class="pagination"-->
-<!--            th:with="-->
-<!--                    pageNumber = ${boardList.pageable.pageNumber},-->
-<!--                    pageSize = ${boardList.pageable.pageSize},-->
-<!--                    totalPages = ${boardList.totalPages},-->
-<!--                    startPage = ${T(java.lang.Math).floor(pageNumber / pageSize) * pageSize + 1},-->
-<!--                    tempEndPage = ${startPage + pageSize - 1},-->
-<!--                    endPage = (${tempEndPage < totalPages ? tempEndPage : totalPages})">-->
-
-<!--            <li th:classappend="${boardList.first} ? 'disabled'" class="page-item">-->
-<!--                <a class="page-link" th:href="${boardList.first} ? '#' : @{/(page=${pageNumber-1})}">-->
-<!--                    <span aria-hidden="true">&lt;</span>-->
-<!--                </a>-->
-<!--            </li>-->
-
-<!--            <li th:each="page: ${#numbers.sequence(startPage, endPage)}" th:classappend="${page == pageNumber} ? 'active'" class="page-item">-->
-<!--                <a th:text="${page}" class="page-link" th:href="@{/(page=${page - 1})}"></a>-->
-<!--            </li>-->
-
-<!--            <li th:classappend="${boardList.last} ? 'disabled'" class="page-item">-->
-<!--                <a class="page-link" th:href="${boardList.last} ? '#' : @{/(page=${pageNumber-1})}" aria-label="Next">-->
-<!--                    <span aria-hidden="true">&gt;</span>-->
-<!--                </a>-->
-<!--            </li>-->
-<!--        </ul>-->
-<!--    </div>-->
