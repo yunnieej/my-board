@@ -14,11 +14,8 @@ import java.time.LocalDateTime;
 public class BoardResponseDto {
 
     private Long id;
-
     private String title;
-
     private String writer;
-
     private int hits;
     private String content;
     private LocalDateTime createdTime;

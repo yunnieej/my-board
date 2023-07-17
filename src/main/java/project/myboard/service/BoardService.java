@@ -1,6 +1,10 @@
 package project.myboard.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import project.myboard.dto.BoardRequestDto;
 import project.myboard.dto.BoardResponseDto;
@@ -32,6 +36,7 @@ public class BoardService {
         boardRepository.save(boardRequestDto.toEntity());
     }
 
+    /***
     @Transactional
     public List<BoardResponseDto> findAll(){
         // 여기서 사용하는 findAll() -> SimpleJpaRepository를 사용
@@ -56,7 +61,23 @@ public class BoardService {
         }
         return boardDtoList;
     }
+    */
+    @Transactional
+    public Page<BoardResponseDto> findPage(Pageable pageable){
+        int page = (pageable.getPageNumber() == 0 ? 0 : (pageable.getPageNumber()-1));
+        Page<BoardEntity> all = boardRepository.findAll(PageRequest.of(page, 3, Sort.Direction.DESC, "id"));
 
+        Page<BoardResponseDto> allDto = all.map(m -> BoardResponseDto.builder()
+                .id(m.getId())
+                .writer(m.getWriter())
+                .title(m.getTitle())
+                .content(m.getContent())
+                .createdTime(m.getCreatedTime())
+                .modifiedTime(m.getModifiedTime())
+                .hits(m.getHits())
+                .build());
+        return allDto;
+    }
 
     // 상세 게시글 보기
     @Transactional
@@ -95,6 +116,7 @@ public class BoardService {
         boardRepository.deleteById(id);
     }
 
+    /***
     //keyword로 검색
     @Transactional
     public List<BoardResponseDto> searchByKeyword(String keyword){
@@ -118,8 +140,24 @@ public class BoardService {
         return boardResponseDtos;
 
     }
+*/
+    @Transactional
+    public Page<BoardResponseDto> searchByKeyword(String keyword, Pageable pageable){
+        int page = (pageable.getPageNumber() == 0 ? 0 : (pageable.getPageNumber()-1));
+        Page<BoardEntity> byTitleContainingPage = boardRepository.findByTitleContaining(keyword, pageable);
 
+        Page<BoardResponseDto> allDto = byTitleContainingPage.map(m -> BoardResponseDto.builder()
+                .id(m.getId())
+                .writer(m.getWriter())
+                .title(m.getTitle())
+                .content(m.getContent())
+                .createdTime(m.getCreatedTime())
+                .modifiedTime(m.getModifiedTime())
+                .hits(m.getHits())
+                .build());
 
+        return allDto;
+    }
 
 
 //    @Transactional

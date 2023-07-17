@@ -20,6 +20,5 @@ public class BoardUpdateDto {
     private String content;
 
     private LocalDateTime modifiedTime;
-
 }
 

@@ -12,5 +12,5 @@ import java.util.List;
 public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
 
     // keyword로 검색기능
-    List<BoardEntity> findByTitleContaining(String keyword);
+    Page<BoardEntity> findByTitleContaining(String keyword, Pageable pageable);
 }

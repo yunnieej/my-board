@@ -1,5 +1,9 @@
 package project.myboard.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,10 +25,18 @@ public class BoardController {
     }
 
     // 메인화면, 게시판 리스트들을 볼 수 있음
+//    @GetMapping("/")
+//    public String list(Model model){
+//        List<BoardResponseDto> boardDtoList = boardService.findAll();
+//        model.addAttribute("boardList", boardDtoList);
+//        return "board/list.html";
+//    }
+
+    // 메인화면, 게시판 리스트들을 볼 수 있음
     @GetMapping("/")
-    public String list(Model model){
-        List<BoardResponseDto> boardDtoList = boardService.findAll();
-        model.addAttribute("boardList", boardDtoList);
+    public String list(@PageableDefault Pageable pageable, Model model){
+        Page<BoardResponseDto> page = boardService.findPage(pageable);
+        model.addAttribute("boardList", page);
         return "board/list.html";
     }
 
@@ -81,9 +93,16 @@ public class BoardController {
     }
 
     //게시글 검색기능
+//    @GetMapping("/search")
+//    public String searchByKeyword(@RequestParam(value="keyword") String keyword, Model model){
+//        List<BoardResponseDto> boardResponseDtos = boardService.searchByKeyword(keyword);
+//        model.addAttribute("boardList", boardResponseDtos);
+//        return "board/list.html";
+//    }
+
     @GetMapping("/search")
-    public String searchByKeyword(@RequestParam(value="keyword") String keyword, Model model){
-        List<BoardResponseDto> boardResponseDtos = boardService.searchByKeyword(keyword);
+    public String searchByKeyword(@RequestParam(value="keyword") String keyword, Model model, @PageableDefault(sort = "id", size = 3, page = 1, direction = Sort.Direction.DESC) Pageable pageable){
+        Page<BoardResponseDto> boardResponseDtos = boardService.searchByKeyword(keyword, pageable);
         model.addAttribute("boardList", boardResponseDtos);
         return "board/list.html";
     }
