@@ -63,7 +63,7 @@ public class BoardService {
     public Page<BoardResponseDto> findPage(Pageable pageable){
         int page = (pageable.getPageNumber() == 0 ? 0 : (pageable.getPageNumber()-1));
 
-        Page<BoardEntity> all = boardRepository.findAll(PageRequest.of(page, 3, Sort.Direction.DESC, "id"));
+        Page<BoardEntity> all = boardRepository.findAll(PageRequest.of(page, 5, Sort.Direction.DESC, "id"));
         // new PageImpl<BoardResponseDto>(list, PageRequest.of(currentPage, pageSize), all.size());
         Page<BoardResponseDto> allDto = all.map(m -> BoardResponseDto.builder()
                 .id(m.getId())
@@ -144,7 +144,7 @@ public class BoardService {
     public Page<BoardResponseDto> searchByKeyword(String keyword, Pageable pageable){
         // pageable의 페이지 -> 0부터 시작. 사용자가 보려는 페이지에서 1 빼야함. (게시판 첫페이지는 1부터 시작하기 때문에) page=2면 게시판에서는 첫페이지
         int page = (pageable.getPageNumber() == 0 ? 0 : (pageable.getPageNumber()-1));
-        Page<BoardEntity> byTitleContainingPage = boardRepository.findByTitleContaining(keyword, PageRequest.of(page, 3, Sort.Direction.DESC, "id"));
+        Page<BoardEntity> byTitleContainingPage = boardRepository.findByTitleContaining(keyword, PageRequest.of(page, 5, Sort.Direction.DESC, "id"));
 
         Page<BoardResponseDto> allDto = byTitleContainingPage.map(m -> BoardResponseDto.builder()
                 .id(m.getId())
@@ -158,17 +158,4 @@ public class BoardService {
 
         return allDto;
     }
-
-
-//    @Transactional
-//    // 게시글 작성 시 유효성 체크하기
-//    public Map<String, String> validateHandling(Errors errors){
-//        Map<String, String> validatorResult = new HashMap<>();
-//
-//        for(FieldError error : errors.getFieldErrors()){
-//            String validKeyName = String.format("valid_%s", error.getField());
-//            validatorResult.put(validKeyName, error.getDefaultMessage());
-//        }
-//        return validatorResult;
-//    }
 }

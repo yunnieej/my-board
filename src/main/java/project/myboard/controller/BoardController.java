@@ -37,18 +37,24 @@ public class BoardController {
     public String list(@PageableDefault Pageable pageable, Model model){
         Page<BoardResponseDto> page = boardService.findPage(pageable);
         model.addAttribute("boardList", page);
-        return "board/list.html";
+        return "redirect:/search?page=1&keyword=";
     }
 
     // 글쓰는 화면
+//    @GetMapping("/post")
+//    public String post(){
+//        return "board/post.html";
+//    }
     @GetMapping("/post")
-    public String post(){
+    public String post(BoardRequestDto boardRequestDto){
+//        model.addAttribute("boardList", new BoardRequestDto());
         return "board/post.html";
     }
 
     @PostMapping("/post")
     public String save(@Valid BoardRequestDto boardRequestDto, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
+//            model.addAttribute("boardList", new BoardRequestDto());
             return "board/post.html";
         }
         boardService.saveBoard(boardRequestDto);
@@ -80,7 +86,11 @@ public class BoardController {
 
     // 게시글 수정 데이터
     @PutMapping("/post/update/{id}")
-    public String update(Long id, BoardUpdateDto boardUpdateDto){
+    public String update(@Valid BoardUpdateDto boardUpdateDto, BindingResult bindingResult, Long id){
+        if (bindingResult.hasErrors()){
+//            model.addAttribute("boardList", new BoardRequestDto());
+            return "board/update.html";
+        }
         boardService.update(id, boardUpdateDto);
         return "redirect:/post/{id}";
     }
@@ -102,9 +112,9 @@ public class BoardController {
 
     @GetMapping("/search")
     public String searchByKeyword(@RequestParam(value="keyword") String keyword, Model model, @PageableDefault Pageable pageable){
-        Page<BoardResponseDto> boardResponseDtos = boardService.searchByKeyword(keyword, pageable);
+        Page<BoardResponseDto> boardResponseDtos = boardService.searchByKeyword(keyword, pageable); //keyword pageable의 page 넘어옴
         model.addAttribute("boardList", boardResponseDtos);
+
         return "board/list.html";
     }
-
 }

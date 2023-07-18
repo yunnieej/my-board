@@ -4,6 +4,19 @@
     <meta charset="UTF-8" />
     <title>게시판 - 상세페이지</title>
     <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css" />
+
+    <script>
+        window.onload = function(){
+            let tableAnchor = document.querySelectorAll('table a'); //선택자
+            let parameter = window.location.href.split("?")[1]; // 페이지 url
+            let size = tableAnchor.length;
+            for(let i = 0; i < size; i++){
+                tableAnchor[i].href += "?"+parameter;
+            }
+        }
+    </script>
+
+
 </head>
 <body>
 <header th:insert="fragments/header.html"></header>
@@ -41,21 +54,12 @@
     <div class="col text-center">
         <a class="btn btn-dark" th:href="@{/post/update/{id}(id=${boardDto.id})}" role="button">수정</a>
         <a class="btn btn-dark" th:href="@{/post/delete/{id}(id=${boardDto.id})}" role="button">삭제</a>
+
         <a class="btn btn-dark" th:href="@{/}" role="button">목록으로 가기</a>
+<!--        <a class="btn btn-dark" href ="javascript:history.back();" role ="button">목록으로 가기</a>-->
     </div>
 </div>
-<!--<div class="row">-->
-<!--    <div class="col-md-3 ml-md-auto"></div>-->
-<!--    <div class="col-auto">-->
-<!--        <a class="btn btn-dark" th:href="@{/post/delete/{id}(id=${boardDto.id})}" role="button">삭제</a>-->
-<!--    </div>-->
-<!--</div>-->
-<!--<div class="row">-->
-<!--    <div class="col-md-3 ml-md-auto"></div>-->
-<!--    <div class="col-auto">-->
-<!--        <a class="btn btn-dark" th:href="@{/}" role="button">목록으로 가기</a>-->
-<!--    </div>-->
-<!--</div>-->
+
 
 <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>

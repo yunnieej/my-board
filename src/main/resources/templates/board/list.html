@@ -4,13 +4,46 @@
     <meta charset="UTF-8" />
     <title>게시판 - 목록</title>
     <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css" />
+    <style>
+    .page-link {
+      color: #000;
+      background-color: #fff;
+      border: 1px solid #ccc;
+    }
+
+    .page-item.active .page-link {
+     z-index: 1;
+     color: #555;
+     font-weight:bold;
+     background-color: #f1f1f1;
+     border-color: #ccc;
+
+    }
+
+    .page-link:focus, .page-link:hover {
+      color: #000;
+      background-color: #fafafa;
+      border-color: #ccc;
+    }
+    </style>
+    <script>
+        window.onload = function(){
+            let tableAnchor = document.querySelectorAll('table a'); //선택자
+            let parameter = window.location.href.split("?")[1]; // 페이지 url
+            let size = tableAnchor.length;
+            for(let i = 0; i < size; i++){
+                tableAnchor[i].href += "?"+parameter;
+            }
+        }
+    </script>
+
 </head>
 
 <body>
 <header th:insert="fragments/header.html"></header>
 <div id="wrap" >
     <div class="container">
-        <table class="table">
+        <table class="table" id="boardTable">
             <thead class="thead-light">
             <tr class="text-center">
                 <th scope="col">번호</th>
@@ -44,36 +77,35 @@
         </table>
 
         <!--        페이징 관련 버튼-->
-        <!--        <nav style="text-align: center;">-->
-        <ul class = "pagination"
+        <ul class="pagination justify-content-center"
             th:with = "start=${T(java.lang.Math).floor(boardList.number/10)*10 + 1},
                        last=(${start + 9 < boardList.totalPages ? start + 9 : boardList.totalPages})">
             <!--                첫페이지로 가는 버튼-->
-            <li>
-                <a th:href="@{/search(page=1,keyword=${param.keyword})}" aria-label="First">
+            <li class="page-item">
+                <a class="page-link" th:href="@{/search(page=1,keyword=${param.keyword})}" aria-label="First">
                     <span aria-hidden="true">First</span>
                 </a>
             </li>
             <!--                이전 페이지로 가는 버튼-->
-            <li th:class="${boardList.first} ? 'disabled'">
+            <li class="page-item" th:class="${boardList.first} ? 'disabled'">
 <!--                현재 페이지 -1 이 자동으로 적용-->
-                <a th:href="${boardList.first} ? '#' :@{/search(page=${boardList.number},keyword=${param.keyword})}" aria-label="Previous">
+                <a class="page-link" th:href="${boardList.first} ? '#' :@{/search(page=${boardList.number},keyword=${param.keyword})}" aria-label="Previous">
                     <span aria-hidden="true">&lt;</span>
                 </a>
             </li>
             <!--                페이지 나열하기-->
-            <li th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == boardList.number + 1}? 'pagination_button page-item active' : 'pagination_button page-item'">
-                <a th:text ="${page}" th:href = "@{/search(page=${page}, keyword=${param.keyword})}"></a>
+            <li class="page-item" th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == boardList.number + 1}? 'pagination_button page-item active' : 'pagination_button page-item'">
+                <a class="page-link" th:text ="${page}" th:href = "@{/search(page=${page}, keyword=${param.keyword})}"></a>
             </li>
             <!--                다음 페이지로 가기-->
-            <li th:class = "${boardList.last} ? 'disabled'">
-                <a th:href = "${boardList.last} ? '#' :@{/search(page=${boardList.number + 2},keyword=${param.keyword})}" aria-label = "Next">
+            <li class="page-item" th:class = "${boardList.last} ? 'disabled'">
+                <a class="page-link"th:href = "${boardList.last} ? '#' :@{/search(page=${boardList.number + 2},keyword=${param.keyword})}" aria-label = "Next">
                     <span aria-hidden="true">&gt;</span>
                 </a>
             </li>
             <!--                마지막 페이지로 가기-->
-            <li>
-                <a th:href="@{/search(page=${boardList.totalPages},keyword=${param.keyword})}" aria-label="Last">
+            <li class="page-item">
+                <a class="page-link" th:href="@{/search(page=${boardList.totalPages},keyword=${param.keyword})}" aria-label="Last">
                     <span aria-hidden="true">Last</span>
                 </a>
             </li>
@@ -92,6 +124,7 @@
                     <input name = "keyword" type = "text" placeholder="검색어를 입력해주세요.">
 <!--                    <a class = "btn btn-dark" role = "button">검색하기</a>-->
                     <button class="btn btn-dark" type="submit">검색하기</button>
+
                     <a class="btn btn-dark" th:href="@{/}" role="button">목록으로 가기</a>
                 </div>
             </div>
