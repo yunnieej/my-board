@@ -4,6 +4,16 @@
     <meta charset="UTF-8" />
     <title>게시판 - 글 수정</title>
     <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css" />
+
+    <script>
+        window.onload = function(){
+            let tableAnchor2 = document.querySelector('#update_btn');
+            let parameter2 = window.location.href.split("/")[4].split("?")[1];
+            tableAnchor2.href += "?"+parameter2;
+        }
+    </script>
+
+
 </head>
 <body>
 <header th:insert="fragments/header.html"></header>
@@ -47,7 +57,7 @@
         <div class="row">
             <div class="col-auto mr-auto"></div>
             <div class="col-auto">
-                <input class="btn btn-dark" type="submit" role="button" value="수정" />
+                <input id=update_btn th:href = "@{/post/{id}(id=${boardDto.id})}" class="btn btn-dark" type="submit" role="button" value="수정" />
             </div>
         </div>
     </form>

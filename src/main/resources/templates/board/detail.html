@@ -7,12 +7,15 @@
 
     <script>
         window.onload = function(){
-            let tableAnchor = document.querySelectorAll('table a'); //선택자
+            let tableAnchor1 = document.querySelector('#list'); //선택자
+            let tableAnchor2 = document.querySelector('#update');
+<!--            let tableAnchor3 = document.querySelector('#delete');-->
+
             let parameter = window.location.href.split("?")[1]; // 페이지 url
-            let size = tableAnchor.length;
-            for(let i = 0; i < size; i++){
-                tableAnchor[i].href += "?"+parameter;
-            }
+            let parameter2 = window.location.href.split("/")[4].split("?")[1];
+            tableAnchor1.href += "search?"+parameter;
+            tableAnchor2.href += "?"+parameter2;
+<!--            tableAnchor3.href += "search?"+parameter;-->
         }
     </script>
 
@@ -52,10 +55,9 @@
 </div>
 <div class="row">
     <div class="col text-center">
-        <a class="btn btn-dark" th:href="@{/post/update/{id}(id=${boardDto.id})}" role="button">수정</a>
-        <a class="btn btn-dark" th:href="@{/post/delete/{id}(id=${boardDto.id})}" role="button">삭제</a>
-
-        <a class="btn btn-dark" th:href="@{/}" role="button">목록으로 가기</a>
+        <a id=update class="btn btn-dark" th:href="@{/post/update/{id}(id=${boardDto.id})}" role="button">수정</a>
+        <a id=delete class="btn btn-dark" th:href="@{/post/delete/{id}(id=${boardDto.id})}" role="button">삭제</a>
+        <a id=list class="btn btn-dark" th:href="@{/}" role="button">목록으로 가기</a>
 <!--        <a class="btn btn-dark" href ="javascript:history.back();" role ="button">목록으로 가기</a>-->
     </div>
 </div>
