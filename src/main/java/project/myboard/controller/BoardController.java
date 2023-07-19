@@ -94,7 +94,7 @@ public class BoardController {
 
     // 게시글 수정 데이터
     @PutMapping("/post/update/{id}")
-    public String update(HttpServletRequest request, RedirectAttributes redirectAttributes, @Valid BoardUpdateDto boardUpdateDto, BindingResult bindingResult, Long id){
+    public String update(HttpServletRequest request, RedirectAttributes redirectAttributes, BoardUpdateDto boardUpdateDto, BindingResult bindingResult, Long id){
         if (bindingResult.hasErrors()){
 //            model.addAttribute("boardList", new BoardRequestDto());
             return "board/update.html";
