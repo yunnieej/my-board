@@ -8,11 +8,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.myboard.dto.BoardRequestDto;
 import project.myboard.dto.BoardResponseDto;
 import project.myboard.dto.BoardUpdateDto;
 import project.myboard.service.BoardService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -70,8 +72,14 @@ public class BoardController {
 
     // 상세 게시글 보기
     @GetMapping("/post/{id}")
-    public String findById(@PathVariable Long id, Model model){
+    public String findById(@PathVariable Long id, Model model , @RequestParam(value = "page") String page,
+                           @RequestParam(value="keyword") String keyword){
         BoardResponseDto boardResponseDto = boardService.findById(id);
+
+        System.out.println("윤지의 페이지2 ======  "  + page);
+        System.out.println("윤지의 페이지2 ======  "  + keyword);
+        model.addAttribute("page",page);
+        model.addAttribute("keyword",keyword);
         model.addAttribute("boardDto", boardResponseDto);
         return "board/detail.html";
     }
@@ -86,11 +94,15 @@ public class BoardController {
 
     // 게시글 수정 데이터
     @PutMapping("/post/update/{id}")
-    public String update(@Valid BoardUpdateDto boardUpdateDto, BindingResult bindingResult, Long id){
+    public String update(HttpServletRequest request, RedirectAttributes redirectAttributes, @Valid BoardUpdateDto boardUpdateDto, BindingResult bindingResult, Long id){
         if (bindingResult.hasErrors()){
 //            model.addAttribute("boardList", new BoardRequestDto());
             return "board/update.html";
         }
+        redirectAttributes.addAttribute("page", request.getParameter("page"));
+        redirectAttributes.addAttribute("keyword", request.getParameter("keyword"));
+//        System.out.println("윤지와 페이지 === " + request.getParameter("page"));
+//        System.out.println("키워드 출력 ==="+ request.getParameter("keyword"));
         boardService.update(id, boardUpdateDto);
         return "redirect:/post/{id}";
     }
