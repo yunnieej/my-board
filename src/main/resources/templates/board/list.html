@@ -27,16 +27,14 @@
     }
     </style>
     <script>
-        window.onload = function(){
-            let tableAnchor = document.querySelectorAll('table a'); //선택자
-            let parameter = window.location.href.split("?")[1]; // 페이지 url
-            let size = tableAnchor.length;
-            for(let i = 0; i < size; i++){
-                tableAnchor[i].href += "?"+parameter;
-            }
-        }
+    window.onload = function(){
+    let tableAnchor = document.querySelectorAll('table a'); //선택자
+    let parameter = window.location.href.split("?")[1]; // 페이지 url
+    let size = tableAnchor.length;
+    for(let i = 0; i < size; i++){
+        tableAnchor[i].href += "?"+parameter; }
+    }
     </script>
-
 </head>
 
 <body>
@@ -59,6 +57,7 @@
                         <span th:text="${board.id}"></span>
                     </th>
                     <td>
+<!--                        상세게시글(제목 누르기)-->
                         <a th:href="@{|/post/${board.id}|}">
                             <span th:text="${board.title}"></span>
                         </a>
@@ -88,7 +87,7 @@
             </li>
             <!--                이전 페이지로 가는 버튼-->
             <li class="page-item" th:class="${boardList.first} ? 'disabled'">
-<!--                현재 페이지 -1 이 자동으로 적용-->
+                <!--                현재 페이지 -1 이 자동으로 적용-->
                 <a class="page-link" th:href="${boardList.first} ? '#' :@{/search(page=${boardList.number},keyword=${param.keyword})}" aria-label="Previous">
                     <span aria-hidden="true">&lt;</span>
                 </a>
@@ -117,11 +116,13 @@
                 <a class="btn btn-dark" th:href="@{/post}" role="button">글쓰기</a>
             </div>
         </div>
-        <form action = "/search" method="get">
+        <form id="search" action="/search" method="get">
             <div class = "search">
                 <div class="col-auto mr-auto"></div>
                 <div class="col-auto">
+                    <input name="page" type="hidden" value="1">
                     <input name = "keyword" type = "text" placeholder="검색어를 입력해주세요.">
+
 <!--                    <a class = "btn btn-dark" role = "button">검색하기</a>-->
                     <button class="btn btn-dark" type="submit">검색하기</button>
 

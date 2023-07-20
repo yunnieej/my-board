@@ -6,34 +6,15 @@
     <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css" />
 
     <script type="text/javaScript">
-        window.onload=function(){
-        let tableAnchor = document.querySelector('#fm1').getAttribute('action');
-        let parameter = window.location.href.split("?")[1];
-        let final = tableAnchor += "?"+parameter;
-        document.querySelector('#fm1').setAttribute('action',final);
-        }
+    window.onload=function(){
+    let tableAnchor = document.querySelector('#fm1').getAttribute('action');
+    let parameter = window.location.href.split("?")[1];
+    let final = tableAnchor += "?"+parameter;
+    document.querySelector('#fm1').setAttribute('action',final);
+    }
     </script>
-
-<!--        window.onload = function(){-->
-<!--            let tableAnchor2 = document.querySelector('#update_btn');-->
-<!--            let parameter2 = window.location.href.split("/")[4].split("?")[1];-->
-<!--            tableAnchor2.href += "?"+parameter2;-->
-<!--        }-->
-
-
-<!--        window.onload = function(){-->
-<!--            let tableAnchor2 = document.querySelector('#update_btn');-->
-<!--            let parameter2 = window.location.href.split("/")[4].split("?")[1];-->
-<!--            tableAnchor2.href += "?"+parameter2;-->
-<!--        }-->
-<!--        window.onload = function(){-->
-<!--            let tableAnchor = document.querySelector('#update_btn');-->
-<!--            let parameter = window.location.href.replace('update/', '');-->
-<!--            tableAnchor.href = parameter;-->
-<!--        }-->
-
-
 </head>
+
 <body>
 <header th:insert="fragments/header.html"></header>
 
@@ -45,9 +26,6 @@
 <!--            제목-->
             <label for="inputTitle" class="col-sm-2 col-form-label"><strong>제목</strong></label>
             <div class="col-sm-10">
-<!--                <input type="text" id="inputTitle" th:field="*{title}" th:value="${boardDto.title}" class="form-control" placeholder="제목을 입력하세요"-->
-<!--                       th:class="${#fields.hasErrors('title')}? 'form-control fieldError' : 'form-control'">-->
-<!--                <p class="error-class" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Incorrect Data</p>-->
                 <input type="text" name="title" class="form-control" id="inputTitle" th:value="${boardDto.title}"/>
 
             </div>
@@ -56,20 +34,13 @@
         <div class="form-group row">
             <label for="inputWriter" class="col-sm-2 col-form-label"><strong>작성자</strong></label>
             <div class="col-sm-10">
-<!--                <input type="text" id="inputWriter" th:field="*{writer}" th:value="${boardDto.writer}" class="form-control" placeholder="작성자를 입력하세요"-->
-<!--                       th:class="${#fields.hasErrors('writer')}? 'form-control fieldError' : 'form-control'">-->
-<!--                <p class="error-class" th:if="${#fields.hasErrors('writer')}" th:errors="*{writer}">Incorrect Data</p>-->
-
-                                <input type="text" name="writer" class="form-control" id="inputWriter" th:value="${boardDto.writer}"/>
+                <input type="text" name="writer" class="form-control" id="inputWriter" th:value="${boardDto.writer}"/>
             </div>
         </div>
 <!--        내용-->
         <div class="form-group row">
             <label for="inputContent" class="col-sm-2 col-form-label"><strong>내용</strong></label>
             <div class="col-sm-10">
-<!--                <textarea type="text" id="inputContent" th:field="*{content}" th:value="${boardDto.content}" th:text="${boardDto.content}" class="form-control" placeholder="내용을 입력하세요"-->
-<!--                          th:class="${#fields.hasErrors('content')}? 'form-control fieldError' : 'form-control'"></textarea>-->
-<!--                <p class="error-class" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Incorrect Data</p>-->
                  <textarea type="text" name="content" class="form-control" id="inputContent" th:value="${boardDto.content}" th:text="${boardDto.content}"></textarea>
             </div>
         </div>
@@ -77,11 +48,7 @@
             <div class="col-auto mr-auto"></div>
             <div class="col-auto">
 <!--                데이터 수정 가능-->
-                <button id=update_btn type="submit" class="btn btn-dark" th:onclick="|location.href='@{/post/{id}(id=${boardDto.id})}'|">수정</button>
-<!--                <button id=update_btn type="button" class="btn btn-dark" th:onclick="|location.href='@{/post/{id}(id=${boardDto.id})}'|">수정</button>-->
-<!--                <button id=update_btn type="button" class="btn btn-dark" th:onclick="|location.href='@{/post/{id}(id=${boardDto.id})}'|">수정</button>-->
-<!--                <a id=update_btn class="btn btn-dark" th:href="@{/post/{id}(id=${boardDto.id})}" role="button">수정</a>-->
-<!--                <a id=update_btn class="btn btn-dark" th:href="@{/post/{id}(id=${boardDto.id})}" type="submit" role="button">수정</a>-->
+                <button id=update_btn type="submit" class="btn btn-dark">수정</button>
 <!--                데이터 수정 가능(url 대체 불가)-->
 <!--                <input id=update_btn class="btn btn-dark" type="submit" role="button" value="수정" />-->
             </div>

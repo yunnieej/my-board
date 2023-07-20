@@ -33,7 +33,8 @@ public class BoardService {
         boardRepository.save(boardRequestDto.toEntity());
     }
 
-    /***
+
+    // pageable 전 전체 리스트 보기
     @Transactional
     public List<BoardResponseDto> findAll(){
         // 여기서 사용하는 findAll() -> SimpleJpaRepository를 사용
@@ -58,7 +59,8 @@ public class BoardService {
         }
         return boardDtoList;
     }
-    */
+
+    // pageable 후 전체 리스트 보기
     @Transactional()
     public Page<BoardResponseDto> findPage(Pageable pageable){
         int page = (pageable.getPageNumber() == 0 ? 0 : (pageable.getPageNumber()-1));
@@ -77,7 +79,29 @@ public class BoardService {
 
         return allDto;
     }
+/***
+    // pageable 후 전체 리스트 보기
+    @Transactional
+    public Page<BoardResponseDto> findPage(Pageable pageable){
+        int page = (pageable.getPageNumber() == 0 ? 0 : (pageable.getPageNumber()-1));
 
+        Page<BoardEntity> all = boardRepository.findAll(PageRequest.of(page, 5, Sort.Direction.DESC, "id"));
+//        Page<BoardEntity> all = boardRepository.findAll(pageable);
+        // new PageImpl<BoardResponseDto>(list, PageRequest.of(currentPage, pageSize), all.size());
+        Page<BoardResponseDto> allDto = all.map(m -> BoardResponseDto.builder()
+                .id(m.getId())
+                .writer(m.getWriter())
+                .title(m.getTitle())
+                .content(m.getContent())
+                .createdTime(m.getCreatedTime())
+                .modifiedTime(m.getModifiedTime())
+                .hits(m.getHits())
+                .build());
+
+        return allDto;
+    }
+
+*/
     // 상세 게시글 보기
     @Transactional
     public BoardResponseDto findById(Long id){
@@ -115,7 +139,7 @@ public class BoardService {
         boardRepository.deleteById(id);
     }
 
-    /***
+/***
     //keyword로 검색
     @Transactional
     public List<BoardResponseDto> searchByKeyword(String keyword){
@@ -140,10 +164,16 @@ public class BoardService {
 
     }
 */
+
     @Transactional
     public Page<BoardResponseDto> searchByKeyword(String keyword, Pageable pageable){
+
+        int check = pageable.getPageNumber();
+        System.out.println("check = " + check);
         // pageable의 페이지 -> 0부터 시작. 사용자가 보려는 페이지에서 1 빼야함. (게시판 첫페이지는 1부터 시작하기 때문에) page=2면 게시판에서는 첫페이지
         int page = (pageable.getPageNumber() == 0 ? 0 : (pageable.getPageNumber()-1));
+
+//        System.out.println("들어온 페이지의 값은? "+ page);
         Page<BoardEntity> byTitleContainingPage = boardRepository.findByTitleContaining(keyword, PageRequest.of(page, 5, Sort.Direction.DESC, "id"));
 
         Page<BoardResponseDto> allDto = byTitleContainingPage.map(m -> BoardResponseDto.builder()
@@ -158,4 +188,5 @@ public class BoardService {
 
         return allDto;
     }
+
 }
