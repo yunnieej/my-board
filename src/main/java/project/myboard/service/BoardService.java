@@ -167,13 +167,9 @@ public class BoardService {
 
     @Transactional
     public Page<BoardResponseDto> searchByKeyword(String keyword, Pageable pageable){
-
-        int check = pageable.getPageNumber();
-        System.out.println("check = " + check);
-        // pageable의 페이지 -> 0부터 시작. 사용자가 보려는 페이지에서 1 빼야함. (게시판 첫페이지는 1부터 시작하기 때문에) page=2면 게시판에서는 첫페이지
+        // pageable의 페이지 -> 0부터 시작. 사용자가 보려는 페이지에서 1 빼야함.
         int page = (pageable.getPageNumber() == 0 ? 0 : (pageable.getPageNumber()-1));
 
-//        System.out.println("들어온 페이지의 값은? "+ page);
         Page<BoardEntity> byTitleContainingPage = boardRepository.findByTitleContaining(keyword, PageRequest.of(page, 5, Sort.Direction.DESC, "id"));
 
         Page<BoardResponseDto> allDto = byTitleContainingPage.map(m -> BoardResponseDto.builder()

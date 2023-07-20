@@ -19,7 +19,7 @@
 <header th:insert="fragments/header.html"></header>
 
 <div class="container">
-    <form id="fm1" th:action="@{'/post/update/' + ${boardDto.id}}" th:object="${boardUpdateDto}" method="post">
+    <form id="fm1" th:action="@{'/post/update/' + ${boardDto.id}}" method="post">
         <input type="hidden" name="_method" value="put" />
         <input type="hidden" name="id" th:value="${boardDto.id}" />
         <div class="form-group row">

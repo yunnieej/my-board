@@ -9,14 +9,12 @@
      window.onload = function(){
      let tableAnchor1 = document.querySelector('#list'); //선택자
      let tableAnchor2 = document.querySelector('#update');
-<!--            let tableAnchor3 = document.querySelector('#delete');-->
 
      let parameter = window.location.href.split("?")[1]; // 페이지 url
      let parameter2 = window.location.href.split("/")[4].split("?")[1];
      tableAnchor1.href += "search?"+parameter;
      tableAnchor2.href += "?"+parameter2;
-<!--            tableAnchor3.href += "search?"+parameter;-->
-        }
+       }
     </script>
 
 

@@ -11,6 +11,6 @@ import java.util.List;
 // Entity와 id 타입과 매핑
 public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
 
-    // keyword로 검색기능
     Page<BoardEntity> findByTitleContaining(String keyword, Pageable pageable); //제목으로 검색하기
 }
+
