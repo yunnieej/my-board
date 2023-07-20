@@ -36,7 +36,6 @@
             </tr>
             <tr>
                 <th>작성일자</th>
-<!--                <td th:text="${boardDto.createdTime}"></td>-->
                 <td th:text="${#temporals.format(boardDto.createdTime, 'yyyy-MM-dd HH:mm')}"></td>
             </tr>
            <tr>
@@ -58,10 +57,8 @@
         <a id=update class="btn btn-dark" th:href="@{/post/update/{id}(id=${boardDto.id})}" role="button">수정</a>
         <a id=delete class="btn btn-dark" th:href="@{/post/delete/{id}(id=${boardDto.id})}" role="button">삭제</a>
         <a id=list class="btn btn-dark" th:href="@{/}" role="button">목록으로 가기</a>
-<!--        <a class="btn btn-dark" href ="javascript:history.back();" role ="button">목록으로 가기</a>-->
     </div>
 </div>
-
 
 <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
 <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>

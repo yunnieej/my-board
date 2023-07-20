@@ -154,8 +154,9 @@ public class BoardController {
 
         Page<BoardResponseDto> boardResponseDtos = boardService.searchByKeyword(keyword, pageable); //keyword pageable의 page 넘어옴
         System.out.println("page!! = " + request.getParameter("page"));
-        redirectAttributes.addAttribute("page", request.getParameter("page"));
-        model.addAttribute("page", page);
+        System.out.println("keyword!! = " + request.getParameter("keyword"));
+//        redirectAttributes.addAttribute("page", request.getParameter("page"));
+//        model.addAttribute("page", page);
         model.addAttribute("boardList", boardResponseDtos);
         return "board/list.html";
 
