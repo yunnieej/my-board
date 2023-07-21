@@ -24,20 +24,11 @@ public class BoardController {
 
     // 메인화면, 게시판 리스트들을 볼 수 있음
     @GetMapping("/")
-    public String list(Model model){
-//        List<BoardResponseDto> boardDtoList = boardService.findAll();
-//        model.addAttribute("boardList", boardDtoList);
+    public String list(){
+
         return "redirect:/search?page=1&keyword=";
     }
 
-    // 메인화면, 게시판 리스트들을 볼 수 있음(Pageable 후)
-//    @GetMapping("/")
-//    public String list(@PageableDefault Pageable pageable, Model model){
-//        Page<BoardResponseDto> page = boardService.findPage(pageable);
-//        model.addAttribute("boardList", page);
-//        return "redirect:/search?page=1&keyword=";
-////        return "board/list";
-//    }
 
     // 글 작성하는 화면
     @GetMapping("/post")
@@ -58,14 +49,8 @@ public class BoardController {
 
     // 상세 게시글 보기
     @GetMapping("/post/{id}")
-    public String findById(@PathVariable Long id, Model model){
-//                           @RequestParam(value="page") String page, @RequestParam(value="keyword") String keyword){
+    public String findById(@PathVariable Long id, @RequestParam(value="page") String page, @RequestParam(value="keyword") String keyword, Model model){
         BoardResponseDto boardResponseDto = boardService.findById(id);
-
-//        System.out.println("윤지의 페이지2 ======  "  + page);
-//        System.out.println("윤지의 페이지2 ======  "  + keyword);
-//        model.addAttribute("page",page);
-//        model.addAttribute("keyword",keyword);
         model.addAttribute("boardDto", boardResponseDto);
         return "board/detail.html";
     }
@@ -73,21 +58,26 @@ public class BoardController {
     // id에 해당하는 게시글을 가져와 보여줌
     @GetMapping("/post/update/{id}")
     public String update(@PathVariable Long id, Model model){
-        BoardResponseDto boardResponseDto = boardService.findById(id);
+        BoardResponseDto boardResponseDto = boardService.findByUpdateId(id);
         model.addAttribute("boardDto", boardResponseDto);
         return "board/update.html";
     }
 
     // 게시글 수정 데이터
     @PutMapping("/post/update/{id}")
-    public String update(HttpServletRequest request, RedirectAttributes redirectAttributes, BoardUpdateDto boardUpdateDto, Long id){
-        redirectAttributes.addAttribute("page", request.getParameter("page"));
-        redirectAttributes.addAttribute("keyword", request.getParameter("keyword"));
-//        System.out.println("윤지와 페이지 === " + request.getParameter("page"));
-//        System.out.println("키워드 출력 ==="+ request.getParameter("keyword"));
+    public String update(@RequestParam(value="page") String page, @RequestParam(value="keyword") String keyword,Model model,
+                         RedirectAttributes redirectAttributes, @Valid BoardUpdateDto boardUpdateDto, BindingResult bindingResult, Long id){
+
+        redirectAttributes.addAttribute("page", page);
+        redirectAttributes.addAttribute("keyword", keyword);
+        if(bindingResult.hasErrors()){
+            model.addAttribute("boardDto", boardUpdateDto);
+             return "board/update.html";
+        }
         boardService.update(id, boardUpdateDto);
         return "redirect:/post/{id}";
     }
+
 
     //게시글 삭제
     @GetMapping("/post/delete/{id}")
@@ -96,18 +86,9 @@ public class BoardController {
         return "redirect:/";
     }
 
-    //게시글 검색기능
-//    @GetMapping("/search")
-//    public String searchByKeyword(@RequestParam(value="keyword", required = false) String keyword, Model model){
-//        List<BoardResponseDto> boardResponseDtos = boardService.searchByKeyword(keyword);
-//        model.addAttribute("boardList", boardResponseDtos);
-//        return "board/list.html";
-//    }
 
     @GetMapping("/search")
     public String searchByKeyword(@RequestParam(value="keyword") String keyword, Model model, @PageableDefault Pageable pageable){
-        System.out.println("들어온 keyword = "+  keyword);
-        System.out.println("들어온 page = " + pageable.getPageNumber());
         model.addAttribute("boardList", boardService.searchByKeyword(keyword, pageable)); //keyword pageable의 page 넘어옴
         return "board/list.html";
     }

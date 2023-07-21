@@ -21,15 +21,9 @@ public class BoardService {
     private final BoardRepository boardRepository;
 
     // 저장된 boardDto를 데이터베이스에 넣어야하기 때문에 entity로 바꿔야하는 과정 거쳐야함
+
     @Transactional
     public void saveBoard(BoardRequestDto boardRequestDto){
-        if(boardRequestDto.getWriter().isBlank() || boardRequestDto.getTitle().isBlank()){
-            throw new IllegalStateException("필수 입력값 (작성자, 제목)값이 없습니다.");
-        }
-        else if(boardRequestDto.getContent().matches("[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]")){
-            throw new IllegalStateException("내용에는 특수문자가 들어갈 수 없습니다.");
-        }
-
         boardRepository.save(boardRequestDto.toEntity());
     }
 
@@ -65,7 +59,7 @@ public class BoardService {
     public Page<BoardResponseDto> findPage(Pageable pageable){
         int page = (pageable.getPageNumber() == 0 ? 0 : (pageable.getPageNumber()-1));
 
-        Page<BoardEntity> all = boardRepository.findAll(PageRequest.of(page, 5, Sort.Direction.DESC, "id"));
+        Page<BoardEntity> all = boardRepository.findAll(PageRequest.of(page, 2, Sort.Direction.DESC, "id"));
         // new PageImpl<BoardResponseDto>(list, PageRequest.of(currentPage, pageSize), all.size());
         Page<BoardResponseDto> allDto = all.map(m -> BoardResponseDto.builder()
                 .id(m.getId())
@@ -126,6 +120,31 @@ public class BoardService {
         return boardResponseDto;
     }
 
+
+    // 상세 게시글 보기
+    @Transactional
+    public BoardResponseDto findByUpdateId(Long id){
+        Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
+
+        if (!optionalBoardEntity.isPresent()){
+            throw new NoSuchElementException("해당 순번이 존재하지 않습니다.");
+        }
+
+        BoardEntity boardEntity = optionalBoardEntity.get();
+        boardEntity.minusHits();
+        BoardResponseDto boardResponseDto = BoardResponseDto.builder()
+                .id(boardEntity.getId())
+                .title(boardEntity.getTitle())
+                .writer(boardEntity.getWriter())
+                .content(boardEntity.getContent())
+                .createdTime(boardEntity.getCreatedTime())
+                .modifiedTime(boardEntity.getModifiedTime())
+                .hits(boardEntity.getHits())
+                .build();
+
+        return boardResponseDto;
+    }
+
     // 수정
     @Transactional
     public void update(Long id, BoardUpdateDto boardUpdateDto){
@@ -168,6 +187,7 @@ public class BoardService {
     @Transactional
     public Page<BoardResponseDto> searchByKeyword(String keyword, Pageable pageable){
         // pageable의 페이지 -> 0부터 시작. 사용자가 보려는 페이지에서 1 빼야함.
+        // 페이지를 0부터 관리하기 때문에 1페이지를 요청하려면 0을, 4페이지를 요청하려면 3을 요청해야합니다.
         int page = (pageable.getPageNumber() == 0 ? 0 : (pageable.getPageNumber()-1));
 
         Page<BoardEntity> byTitleContainingPage = boardRepository.findByTitleContaining(keyword, PageRequest.of(page, 5, Sort.Direction.DESC, "id"));

@@ -16,6 +16,7 @@ public class BoardUpdateDto {
     @NotBlank(message = "제목은 필수 입력 항목입니다.")
     private String title;
 
+    @NotBlank(message = "내용은 필수 입력 항목입니다.")
     @Pattern(regexp="[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]*",message="내용에 특수문자는 입력할 수 없습니다.")
     private String content;
 

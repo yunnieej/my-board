@@ -87,9 +87,9 @@
                 </a>
             </li>
             <!--                이전 페이지로 가는 버튼-->
-            <li class="page-item" th:class="${boardList.first} ? 'disabled'">
+            <li class="page-item">
                 <!--                현재 페이지 -1 이 자동으로 적용-->
-                <a class="page-link" th:href="${boardList.first} ? '#' :@{/search(page=${boardList.number},keyword=${param.keyword})}" aria-label="Previous">
+                <a class="page-link" th:href="${boardList.first} ? '' :@{/search(page=${boardList.number},keyword=${param.keyword})}" aria-label="Previous">
                     <span aria-hidden="true">&lt;</span>
                 </a>
             </li>
@@ -98,8 +98,8 @@
                 <a class="page-link" th:text ="${page}" th:href = "@{/search(page=${page}, keyword=${param.keyword})}"></a>
             </li>
             <!--                다음 페이지로 가기-->
-            <li class="page-item" th:class = "${boardList.last} ? 'disabled'">
-                <a class="page-link"th:href = "${boardList.last} ? '#' :@{/search(page=${boardList.number + 2},keyword=${param.keyword})}" aria-label = "Next">
+            <li class="page-item">
+                <a class="page-link"th:href = "${boardList.last} ? '' :@{/search(page=${boardList.number + 2},keyword=${param.keyword})}" aria-label = "Next">
                     <span aria-hidden="true">&gt;</span>
                 </a>
             </li>
@@ -122,7 +122,7 @@
                 <div class="col-auto mr-auto"></div>
                 <div class="col-auto">
                     <input name="page" type="hidden" value="1">
-                    <input name="keyword" type = "text" placeholder="검색어를 입력해주세요.">
+                    <input name="keyword" type = "text" th:value="${param.keyword}" placeholder="검색어를 입력해주세요.">
                     <button class="btn btn-dark" type="submit">검색하기</button>
 
                     <a class="btn btn-dark" th:href="@{/}" role="button">목록으로 가기</a>

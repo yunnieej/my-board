@@ -52,4 +52,8 @@ public class BoardEntity extends BaseEntity{
         this.hits = this.hits+1;
     }
 
+    public void minusHits(){
+        this.hits = this.hits-1;
+    }
+
 }
