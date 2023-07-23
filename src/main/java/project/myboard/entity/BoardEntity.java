@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.bytebuddy.asm.Advice;
+import project.myboard.dto.BoardRequestDto;
 import project.myboard.dto.BoardUpdateDto;
 
 import javax.persistence.*;
@@ -46,14 +47,15 @@ public class BoardEntity extends BaseEntity{
     public void update(BoardUpdateDto boardUpdateDto){
         this.title = boardUpdateDto.getTitle();
         this.content = boardUpdateDto.getContent();
+        this.hits = this.hits-1;
     }
 
     public void updateHits(){
         this.hits = this.hits+1;
     }
 
-    public void minusHits(){
-        this.hits = this.hits-1;
-    }
+//    public void minusHits(){
+//        this.hits = this.hits-1;
+//    }
 
 }

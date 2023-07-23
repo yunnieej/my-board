@@ -16,34 +16,46 @@
 </head>
 
 <body>
+
+<style>
+.error-class {
+    color: red;
+    border-color: red;
+}
+</style>
+
 <header th:insert="fragments/header.html"></header>
 
 <div class="container">
-    <form id="fm1" th:action="@{'/post/update/' + ${boardDto.id}}" method="post">
+    <form id="fm1" th:action="@{'/post/update/' + ${updateDto?.id}}" th:object=${updateDto} method="post">
         <input type="hidden" name="_method" value="put" />
-        <input type="hidden" name="id" th:value="${boardDto.id}" />
+        <input type="hidden" name="id" th:value="${updateDto?.id}" />
         <div class="form-group row">
 <!--            제목-->
             <label for="inputTitle" class="col-sm-2 col-form-label"><strong>제목</strong></label>
             <div class="col-sm-10">
-<!--                <input type="text" maxlength="10" id="inputTitle" th:field="*{title}" class="form-control" placeholder="제목을 입력하세요"-->
-<!--                       th:class="${#fields.hasErrors('title')}? 'form-control fieldError' : 'form-control'">-->
-<!--                <p class="error-class" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Incorrect Data</p>-->
-                <input type="text" name="title" class="form-control" id="inputTitle" th:value="${boardDto.title}"/>
+                <input type="text" maxlength="10" id="inputTitle" th:value="${UpdateDto?.title}" th:field="*{title}" class="form-control" placeholder="제목을 입력하세요"
+                       th:class="${#fields.hasErrors('title')}? 'form-control fieldError' : 'form-control'">
+                <p class="error-class" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Incorrect Data</p>
+<!--                <input type="text" name="title" class="form-control" id="inputTitle" th:value="${boardDto?.title}"/>-->
             </div>
         </div>
 <!--        작성자-->
         <div class="form-group row">
             <label for="inputWriter" class="col-sm-2 col-form-label"><strong>작성자</strong></label>
             <div class="col-sm-10">
-                <input type="text" name="writer" class="form-control" id="inputWriter" th:value="${boardDto.writer}"/>
+                <input type="text" name="writer" class="form-control" id="inputWriter" th:value="${updateDto?.writer}"/>
             </div>
         </div>
 <!--        내용-->
         <div class="form-group row">
             <label for="inputContent" class="col-sm-2 col-form-label"><strong>내용</strong></label>
             <div class="col-sm-10">
-                <textarea type="text" name="content" class="form-control" id="inputContent" th:value="${boardDto.content}" th:text="${boardDto.content}"></textarea>
+                <textarea maxlength="200" type="text" id="inputContent" th:value="${UpdateDto?.content}" th:text="${UpdateDto?.content}"
+                          th:field="*{content}" class="form-control" placeholder="내용을 입력하세요"
+                          th:class="${#fields.hasErrors('content')}? 'form-control fieldError' : 'form-control'"></textarea>
+                <p class="error-class" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Incorrect Data</p>
+<!--                <textarea type="text" name="content" class="form-control" id="inputContent" th:value="${boardDto?.content}" th:text="${boardDto?.content}"></textarea>-->
             </div>
         </div>
         <div class="row">

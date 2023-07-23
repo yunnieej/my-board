@@ -131,7 +131,7 @@ public class BoardService {
         }
 
         BoardEntity boardEntity = optionalBoardEntity.get();
-        boardEntity.minusHits();
+
         BoardResponseDto boardResponseDto = BoardResponseDto.builder()
                 .id(boardEntity.getId())
                 .title(boardEntity.getTitle())

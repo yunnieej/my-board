@@ -33,7 +33,7 @@ public class BoardController {
     // 글 작성하는 화면
     @GetMapping("/post")
     public String post(Model model){
-        model.addAttribute("boardRequestDto", new BoardRequestDto());
+        model.addAttribute("RequestDto", new BoardRequestDto());
         return "board/post.html";
     }
 
@@ -59,22 +59,30 @@ public class BoardController {
     @GetMapping("/post/update/{id}")
     public String update(@PathVariable Long id, Model model){
         BoardResponseDto boardResponseDto = boardService.findByUpdateId(id);
-        model.addAttribute("boardDto", boardResponseDto);
+        BoardUpdateDto updateDto = new BoardUpdateDto();
+        updateDto.setId(boardResponseDto.getId());
+        updateDto.setTitle(boardResponseDto.getTitle());
+        updateDto.setWriter(boardResponseDto.getWriter());
+        updateDto.setContent(boardResponseDto.getContent());
+
+        model.addAttribute("updateDto", updateDto);
+
         return "board/update.html";
     }
 
     // 게시글 수정 데이터
     @PutMapping("/post/update/{id}")
-    public String update(@RequestParam(value="page") String page, @RequestParam(value="keyword") String keyword,Model model,
-                         RedirectAttributes redirectAttributes, @Valid BoardUpdateDto boardUpdateDto, BindingResult bindingResult, Long id){
+    public String update(@RequestParam(value="page") String page, @RequestParam(value="keyword") String keyword, Model model,
+                         RedirectAttributes redirectAttributes, @ModelAttribute("updateDto") @Valid BoardUpdateDto boardUpdateDto, BindingResult bindingResult, Long id){
 
         redirectAttributes.addAttribute("page", page);
         redirectAttributes.addAttribute("keyword", keyword);
+
         if(bindingResult.hasErrors()){
-            model.addAttribute("boardDto", boardUpdateDto);
-             return "board/update.html";
+            return "board/update.html";
         }
         boardService.update(id, boardUpdateDto);
+
         return "redirect:/post/{id}";
     }
 
