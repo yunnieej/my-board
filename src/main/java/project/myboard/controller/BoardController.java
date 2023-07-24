@@ -7,11 +7,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.myboard.dto.BoardRequestDto;
 import project.myboard.dto.BoardResponseDto;
 import project.myboard.dto.BoardUpdateDto;
 import project.myboard.service.BoardService;
+import project.myboard.service.FileService;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
@@ -19,13 +22,15 @@ import java.util.List;
 @Controller
 public class BoardController {
     private final BoardService boardService;
-    public BoardController(BoardService boardService) {this.boardService = boardService;}
-
+    private final FileService fileService;
+    public BoardController(BoardService boardService, FileService fileService) {
+        this.boardService = boardService;
+        this.fileService = fileService;
+    }
 
     // 메인화면, 게시판 리스트들을 볼 수 있음
     @GetMapping("/")
     public String list(){
-
         return "redirect:/search?page=1&keyword=";
     }
 
@@ -34,16 +39,21 @@ public class BoardController {
     @GetMapping("/post")
     public String post(Model model){
         model.addAttribute("RequestDto", new BoardRequestDto());
+
         return "board/post.html";
     }
 
     // 글 작성
     @PostMapping("/post")
-    public String save(@Valid BoardRequestDto boardRequestDto, BindingResult bindingResult){
+    public String save(@PathVariable("file") MultipartFile files, @Valid BoardRequestDto boardRequestDto, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             return "board/post.html";
         }
+//        String originalFilename = files.getOriginalFilename();
+//        System.out.println(originalFilename);
+
         boardService.saveBoard(boardRequestDto);
+
         return "redirect:/";
     }
 
@@ -93,7 +103,6 @@ public class BoardController {
         boardService.deleteById(id);
         return "redirect:/";
     }
-
 
     @GetMapping("/search")
     public String searchByKeyword(@RequestParam(value="keyword") String keyword, Model model, @PageableDefault Pageable pageable){

@@ -12,7 +12,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
-@Entity
+@Entity // db에 있는 table임을 명시함
 @Getter
 @Table(name="board")
 public class BoardEntity extends BaseEntity{
@@ -35,12 +35,16 @@ public class BoardEntity extends BaseEntity{
     @Column
     private int hits;
 
+    @Column
+    private Long fileId;
+
     @Builder
-    public BoardEntity(Long id, String writer, String title, String content, int hits){
+    public BoardEntity(Long id, String writer, String title, String content, Long fileId, int hits){
         this.id  = id;
         this.writer = writer;
         this.title = title;
         this.content = content;
+        this.fileId = fileId;
         this.hits = hits;
     }
 

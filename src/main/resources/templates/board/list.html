@@ -26,15 +26,42 @@
       border-color: #ccc;
     }
     </style>
-    <script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous">
+<!--    // 파악해서 은호 선임에게 알려주기-->
     window.onload = function(){
-    let tableAnchor = document.querySelectorAll('table a'); //선택자
-    let parameter = window.location.href.split("?")[1]; // 페이지 url
-    let size = tableAnchor.length;
-    for(let i = 0; i < size; i++){
-        tableAnchor[i].href += "?"+parameter; }
+        let tableAnchor = document.querySelectorAll('table a'); //선택자
+        let parameter = window.location.href.split("?")[1]; // 페이지 url
+        let size = tableAnchor.length;
+        for(let i = 0; i < size; i++){
+            tableAnchor[i].href += "?"+parameter;
+        }
     }
+
+<!--    // 파악해서 은호 선임에게 알려주기-->
+<!--    // 출처: https://10000-doo.tistory.com/entry/JavaScript-%EB%92%A4%EB%A1%9C%EA%B0%80%EA%B8%B0-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EA%B0%90%EC%A7%80%ED%95%B4%EC%84%9C-%EB%A7%89%EA%B8%B0-->
+    window.onpageshow = function(event) {
+        if (event.persisted || (window.performance && window.performance.navigation.type == 2)) {
+            location.reload();
+        }
+    }
+
+    $("#search1").click(function(){
+        var Params = "?";
+        Params += window.location.href.split("?")[1];
+        Params += $("#keyword").val();
+
+        $.ajax({
+        url: '/search' + Params,
+        dataType: 'text',
+        success: function(boardList){
+            alert(boardList);
+        },
+         error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+             alert("통신 실패.");
+       }
+    })
     </script>
+
 </head>
 
 <body>
@@ -117,18 +144,19 @@
                 <a class="btn btn-dark" th:href="@{/post}" role="button">글쓰기</a>
             </div>
         </div>
-        <form id="search" action="/search" method="get">
+      <!--  <form id="search" method="get">-->
             <div class = "search">
                 <div class="col-auto mr-auto"></div>
                 <div class="col-auto">
                     <input name="page" type="hidden" value="1">
-                    <input name="keyword" type = "text" th:value="${param.keyword}" placeholder="검색어를 입력해주세요.">
-                    <button class="btn btn-dark" type="submit">검색하기</button>
+                    <input id = "keyword" name="keyword" type = "text" th:value="${param.keyword}" placeholder="검색어를 입력해주세요.">
+                    <!--<button class="btn btn-dark" id="search1"  onclick="searchAjax();">검색하기</button>-->
+                    <input type="button" class="btn btn-dark" id="search1" value="검색하기">
 
-                    <a class="btn btn-dark" th:href="@{/}" role="button">목록으로 가기</a>
+                    <a class="btn btn-dark" th:href="@{/}" role="button">목록으로 가기1</a>
                 </div>
             </div>
-        </form>
+       <!-- </form>-->
     </div>
     <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
     <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>

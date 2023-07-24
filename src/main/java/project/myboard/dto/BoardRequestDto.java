@@ -30,14 +30,17 @@ public class BoardRequestDto {
 
     private int hits;
 
+    private Long fileId;
+
     private LocalDateTime createdTime;
     private LocalDateTime modifiedTime;
 
     @Builder
-    public BoardRequestDto(String writer, String title, String content, LocalDateTime createdTime, LocalDateTime modifiedTime){
+    public BoardRequestDto(String writer, String title, String content, Long fileId, LocalDateTime createdTime, LocalDateTime modifiedTime){
         this.writer = writer;
         this.title = title;
         this.content = content;
+        this.fileId = fileId;
         this.createdTime = createdTime;
         this.modifiedTime = modifiedTime;
     }
@@ -46,6 +49,7 @@ public class BoardRequestDto {
         return BoardEntity.builder()
                 .writer(writer)
                 .title(title)
+                .fileId(fileId)
                 .content(content)
                 .hits(0)
                 .build();

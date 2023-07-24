@@ -112,6 +112,7 @@ public class BoardService {
                 .title(boardEntity.getTitle())
                 .writer(boardEntity.getWriter())
                 .content(boardEntity.getContent())
+                .fileId(boardEntity.getFileId())
                 .createdTime(boardEntity.getCreatedTime())
                 .modifiedTime(boardEntity.getModifiedTime())
                 .hits(boardEntity.getHits())
@@ -189,7 +190,7 @@ public class BoardService {
         // pageable의 페이지 -> 0부터 시작. 사용자가 보려는 페이지에서 1 빼야함.
         // 페이지를 0부터 관리하기 때문에 1페이지를 요청하려면 0을, 4페이지를 요청하려면 3을 요청해야합니다.
         int page = (pageable.getPageNumber() == 0 ? 0 : (pageable.getPageNumber()-1));
-
+//        int page = pageable.getPageNumber()-1;
         Page<BoardEntity> byTitleContainingPage = boardRepository.findByTitleContaining(keyword, PageRequest.of(page, 5, Sort.Direction.DESC, "id"));
 
         Page<BoardResponseDto> allDto = byTitleContainingPage.map(m -> BoardResponseDto.builder()

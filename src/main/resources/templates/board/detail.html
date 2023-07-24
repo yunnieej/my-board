@@ -14,7 +14,7 @@
      let parameter2 = window.location.href.split("/")[4].split("?")[1];
      tableAnchor1.href += "search?"+parameter;
      tableAnchor2.href += "?"+parameter2;
-       }
+     }
     </script>
 
 
@@ -45,6 +45,8 @@
                 <th>내용</th>
                 <td th:text="${boardDto.content}"></td>
             </tr>
+
+
         </tbody>
     </table>
 </div>

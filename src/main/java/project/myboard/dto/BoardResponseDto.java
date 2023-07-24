@@ -18,16 +18,18 @@ public class BoardResponseDto {
     private String writer;
     private int hits;
     private String content;
+    private Long fileId;
     private LocalDateTime createdTime;
     private LocalDateTime modifiedTime;
 
     @Builder
-    public BoardResponseDto(Long id, String title, String writer, String content ,int hits, LocalDateTime createdTime,
+    public BoardResponseDto(Long id, String title, String writer, String content ,int hits, Long fileId,LocalDateTime createdTime,
                             LocalDateTime modifiedTime){
         this.id = id;
         this.title = title;
         this.writer = writer;
         this.hits = hits;
+        this.fileId = fileId;
         this.content = content;
         this.createdTime = createdTime;
         this.modifiedTime = modifiedTime;
