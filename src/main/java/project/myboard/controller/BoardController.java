@@ -9,15 +9,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import project.myboard.common.PagingConst;
 import project.myboard.dto.BoardRequestDto;
 import project.myboard.dto.BoardResponseDto;
 import project.myboard.dto.BoardUpdateDto;
 import project.myboard.service.BoardService;
 import project.myboard.service.FileService;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class BoardController {
@@ -45,12 +45,22 @@ public class BoardController {
 
     // 글 작성
     @PostMapping("/post")
-    public String save(@PathVariable("file") MultipartFile files, @Valid BoardRequestDto boardRequestDto, BindingResult bindingResult){
+    public String save(@RequestParam("file") MultipartFile files, @ModelAttribute("RequestDto") @Valid BoardRequestDto boardRequestDto, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             return "board/post.html";
         }
-//        String originalFilename = files.getOriginalFilename();
-//        System.out.println(originalFilename);
+
+        if(!files.isEmpty()) {
+
+            String originalFilename = files.getOriginalFilename();
+            String extension = originalFilename.substring(originalFilename.lastIndexOf("."), originalFilename.length());
+
+            UUID uuid = UUID.randomUUID();
+            String newFilename = uuid.toString() + extension;
+
+//            String savedPath =
+
+        }
 
         boardService.saveBoard(boardRequestDto);
 
@@ -106,7 +116,20 @@ public class BoardController {
 
     @GetMapping("/search")
     public String searchByKeyword(@RequestParam(value="keyword") String keyword, Model model, @PageableDefault Pageable pageable){
-        model.addAttribute("boardList", boardService.searchByKeyword(keyword, pageable)); //keyword pageable의 page 넘어옴
+        Page<BoardResponseDto> boardList = boardService.searchByKeyword(keyword, pageable);
+//        System.out.println(boardList.getTotalElements());
+//
+//        if(boardList.getTotalElements() == 0){
+//            model.addAttribute("message", "해당 게시글이 없습니다.");}
+
+        model.addAttribute("boardList", boardList); //keyword pageable의 page 넘어옴
+        model.addAttribute("boardCount", boardList.getTotalElements());
+
+//        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
+//        int endPage = ((startPage + PagingConst.BLOCK_LIMIT-1)< boardList.getTotalPages())?startPage + PagingConst.BLOCK_LIMIT -1 : boardList.getTotalPages();
+//        model.addAttribute("startPage",startPage);
+//        model.addAttribute("endPage",endPage);
+
         return "board/list.html";
     }
 }

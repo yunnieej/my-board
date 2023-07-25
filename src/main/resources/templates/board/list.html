@@ -26,14 +26,26 @@
       border-color: #ccc;
     }
     </style>
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous">
-<!--    // 파악해서 은호 선임에게 알려주기-->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script th:inline="javascript">
+    <!--    // 파악해서 은호 선임에게 알려주기-->
     window.onload = function(){
         let tableAnchor = document.querySelectorAll('table a'); //선택자
         let parameter = window.location.href.split("?")[1]; // 페이지 url
         let size = tableAnchor.length;
         for(let i = 0; i < size; i++){
             tableAnchor[i].href += "?"+parameter;
+        }
+
+        if($("#keyword").val() != ""){
+            let count = [[${boardCount}]];
+
+            if(count == 0){
+                // $(".container").hide();
+                // alert("해당 게시글이 없습니다");
+                window.history.back();
+
+            }
         }
     }
 
@@ -44,23 +56,9 @@
             location.reload();
         }
     }
-
-    $("#search1").click(function(){
-        var Params = "?";
-        Params += window.location.href.split("?")[1];
-        Params += $("#keyword").val();
-
-        $.ajax({
-        url: '/search' + Params,
-        dataType: 'text',
-        success: function(boardList){
-            alert(boardList);
-        },
-         error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
-             alert("통신 실패.");
-       }
-    })
     </script>
+
+
 
 </head>
 
@@ -70,7 +68,7 @@
     <div class="container">
         <table class="table" id="boardTable">
             <thead class="thead-light">
-            <tr class="text-center">
+            <tr class="text-center" >
                 <th scope="col">번호</th>
                 <th scope="col">제목</th>
                 <th scope="col">작성자</th>
@@ -79,7 +77,7 @@
             </tr>
             </thead>
             <tbody>
-                <tr class="text-center" th:each="board : ${boardList}">
+                <tr class="text-center" th:if= "${not #lists.isEmpty(boardList)}" th:each="board : ${boardList}">
                     <th scope="row">
                         <span th:text="${board.id}"></span>
                     </th>
@@ -100,13 +98,20 @@
                         <span th:text = "${board.hits}"></span>
                     </td>
                 </tr>
+<!--                <tr th:unless="${not #lists.isEmpty(boardList)}">-->
+<!--                    <td colspan="5">-->
+<!--                        <div class = "no_data_msg">검색된 결과가 없습니다.</div>-->
+<!--                    </td>-->
+<!--                </tr>-->
             </tbody>
         </table>
 
-        <!--        페이징 관련 버튼-->
+        <!--페이징 관련 버튼-->
         <ul class="pagination justify-content-center"
-            th:with = "start=${T(java.lang.Math).floor(boardList.number/10)*10 + 1},
-                       last=(${start + 9 < boardList.totalPages ? start + 9 : boardList.totalPages})">
+            th:with = "start= ${T(java.lang.Math).floor(boardList.number/10)*10 + 1},
+                       end = (${boardList.totalPages} > ${start} + 9) ? ${start} + 9 : ${boardList.totalPages}">
+
+<!--                       last=(${start + 9 < boardList.totalPages ? start + 9 : boardList.totalPages})">-->
             <!--                첫페이지로 가는 버튼-->
             <li class="page-item">
                 <a class="page-link" th:href="@{/search(page=1,keyword=${param.keyword})}" aria-label="First">
@@ -121,9 +126,13 @@
                 </a>
             </li>
             <!--                페이지 나열하기-->
-            <li class="page-item" th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == boardList.number + 1}? 'pagination_button page-item active' : 'pagination_button page-item'">
+            <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:class="${page == boardList.number + 1}? 'pagination_button page-item active' : 'pagination_button page-item'">
                 <a class="page-link" th:text ="${page}" th:href = "@{/search(page=${page}, keyword=${param.keyword})}"></a>
             </li>
+
+<!--            <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:class="${page == boardList.number + 1}? 'pagination_button page-item active' : 'pagination_button page-item'">-->
+<!--                <a class="page-link" th:text ="${page}" th:href = "@{/search(page=${page}, keyword=${param.keyword})}"></a>-->
+<!--            </li>-->
             <!--                다음 페이지로 가기-->
             <li class="page-item">
                 <a class="page-link"th:href = "${boardList.last} ? '' :@{/search(page=${boardList.number + 2},keyword=${param.keyword})}" aria-label = "Next">
@@ -144,20 +153,22 @@
                 <a class="btn btn-dark" th:href="@{/post}" role="button">글쓰기</a>
             </div>
         </div>
-      <!--  <form id="search" method="get">-->
+        <form id="search" method="get" action="/search" name="formname">
             <div class = "search">
                 <div class="col-auto mr-auto"></div>
                 <div class="col-auto">
                     <input name="page" type="hidden" value="1">
                     <input id = "keyword" name="keyword" type = "text" th:value="${param.keyword}" placeholder="검색어를 입력해주세요.">
                     <!--<button class="btn btn-dark" id="search1"  onclick="searchAjax();">검색하기</button>-->
-                    <input type="button" class="btn btn-dark" id="search1" value="검색하기">
+                    <input class="btn btn-dark" type="submit" id="search1" value="검색하기">
 
-                    <a class="btn btn-dark" th:href="@{/}" role="button">목록으로 가기1</a>
+                    <a class="btn btn-dark" th:href="@{/}" role="button">목록으로 가기</a>
                 </div>
             </div>
-       <!-- </form>-->
+        </form>
     </div>
+
+
     <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
     <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </div>

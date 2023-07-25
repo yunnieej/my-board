@@ -13,6 +13,9 @@ import javax.transaction.Transactional;
 @RequiredArgsConstructor
 public class FileService {
 
+    @Value("${upload.path}")
+    private String fileDir;
+
     private final FileRepository fileRepository;
 
     @Transactional

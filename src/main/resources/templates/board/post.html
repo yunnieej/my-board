@@ -26,7 +26,7 @@
             <label th:for="inputTitle" class="col-sm-2 col-form-label"><strong>제목</strong></label>
 <!--            <div class="col-sm-10">-->
             <div class="col-sm-10">
-                <input type="text" maxlength="10" id="inputTitle" th:field="*{title}" class="form-control" placeholder="제목을 입력하세요"
+                <input type="text" maxlength="50" id="inputTitle" th:field="*{title}" class="form-control" placeholder="제목을 입력하세요"
                        th:class="${#fields.hasErrors('title')}? 'form-control fieldError' : 'form-control'">
                 <p class="error-class" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Incorrect Data</p>
 <!--                <input type="text" name="title" class="form-control" id="inputTitle" placeholder="제목을 입력하세요"/>-->
@@ -36,7 +36,7 @@
         <div class="form-group row">
             <label for="inputWriter" class="col-sm-2 col-form-label"><strong>작성자</strong></label>
             <div class="col-sm-10">
-                <input type="text" maxlength="10" id="inputWriter" th:field="*{writer}" class="form-control" placeholder="작성자를 입력하세요"
+                <input type="text" maxlength="50" id="inputWriter" th:field="*{writer}" class="form-control" placeholder="작성자를 입력하세요"
                        th:class="${#fields.hasErrors('writer')}? 'form-control fieldError' : 'form-control'">
                 <p class="error-class" th:if="${#fields.hasErrors('writer')}" th:errors="*{writer}">Incorrect Data</p>
 <!--                <input type="text" name="writer" class="form-control" id="inputWriter" placeholder="작성자를 입력하세요"/>-->
@@ -46,7 +46,7 @@
         <div class="form-group row">
             <label for="inputContent" class="col-sm-2 col-form-label"><strong>내용</strong></label>
             <div class="col-sm-10">
-                <textarea maxlength="200" type="text" id="inputContent" th:field="*{content}" class="form-control" placeholder="내용을 입력하세요"
+                <textarea maxlength="500" type="text" id="inputContent" th:field="*{content}" class="form-control" placeholder="내용을 입력하세요"
                        th:class="${#fields.hasErrors('content')}? 'form-control fieldError' : 'form-control'"></textarea>
                 <p class="error-class" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Incorrect Data</p>
 <!--                <textarea type="text" name="content" class="form-control" id="inputContent" placeholder="내용을 입력하세요"></textarea>-->

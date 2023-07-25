@@ -3,6 +3,7 @@ package project.myboard.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import project.myboard.common.PagingConst;
 import project.myboard.dto.BoardRequestDto;
 import project.myboard.dto.BoardResponseDto;
 import project.myboard.dto.BoardUpdateDto;
@@ -191,7 +192,7 @@ public class BoardService {
         // 페이지를 0부터 관리하기 때문에 1페이지를 요청하려면 0을, 4페이지를 요청하려면 3을 요청해야합니다.
         int page = (pageable.getPageNumber() == 0 ? 0 : (pageable.getPageNumber()-1));
 //        int page = pageable.getPageNumber()-1;
-        Page<BoardEntity> byTitleContainingPage = boardRepository.findByTitleContaining(keyword, PageRequest.of(page, 5, Sort.Direction.DESC, "id"));
+        Page<BoardEntity> byTitleContainingPage = boardRepository.findByTitleContaining(keyword, PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.Direction.DESC, "id"));
 
         Page<BoardResponseDto> allDto = byTitleContainingPage.map(m -> BoardResponseDto.builder()
                 .id(m.getId())
