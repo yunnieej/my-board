@@ -45,21 +45,9 @@ public class BoardController {
 
     // 글 작성
     @PostMapping("/post")
-    public String save(@RequestParam("file") MultipartFile files, @ModelAttribute("RequestDto") @Valid BoardRequestDto boardRequestDto, BindingResult bindingResult){
+    public String save(@ModelAttribute("RequestDto") @Valid BoardRequestDto boardRequestDto, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             return "board/post.html";
-        }
-
-        if(!files.isEmpty()) {
-
-            String originalFilename = files.getOriginalFilename();
-            String extension = originalFilename.substring(originalFilename.lastIndexOf("."), originalFilename.length());
-
-            UUID uuid = UUID.randomUUID();
-            String newFilename = uuid.toString() + extension;
-
-//            String savedPath =
-
         }
 
         boardService.saveBoard(boardRequestDto);

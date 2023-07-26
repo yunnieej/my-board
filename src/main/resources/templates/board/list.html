@@ -29,36 +29,40 @@
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <script th:inline="javascript">
     <!--    // 파악해서 은호 선임에게 알려주기-->
+
+    if($("#keyword").val() != ""){
+        let count = [[${boardCount}]];
+
+        if(count == 0){
+            // $(".container").hide();
+            alert("해당 게시글이 없습니다");
+            location.href = "/search?page=1&keyword="
+        }
+    }
+
     window.onload = function(){
+        alert("실행?");
         let tableAnchor = document.querySelectorAll('table a'); //선택자
         let parameter = window.location.href.split("?")[1]; // 페이지 url
         let size = tableAnchor.length;
         for(let i = 0; i < size; i++){
             tableAnchor[i].href += "?"+parameter;
         }
-
-        if($("#keyword").val() != ""){
-            let count = [[${boardCount}]];
-
-            if(count == 0){
-                // $(".container").hide();
-                // alert("해당 게시글이 없습니다");
-                window.history.back();
-
-            }
-        }
     }
 
 <!--    // 파악해서 은호 선임에게 알려주기-->
 <!--    // 출처: https://10000-doo.tistory.com/entry/JavaScript-%EB%92%A4%EB%A1%9C%EA%B0%80%EA%B8%B0-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EA%B0%90%EC%A7%80%ED%95%B4%EC%84%9C-%EB%A7%89%EA%B8%B0-->
     window.onpageshow = function(event) {
-        if (event.persisted || (window.performance && window.performance.navigation.type == 2)) {
+        alert("onpageshow 실행");
+//        if (event.persisted == true || (window.performance && window.performance.navigation.type == 2)) {
+        if(event.persisted == true){
             location.reload();
+            alert("page reload 성공");
         }
     }
+
+
     </script>
-
-
 
 </head>
 
@@ -167,7 +171,6 @@
             </div>
         </form>
     </div>
-
 
     <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
     <script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
