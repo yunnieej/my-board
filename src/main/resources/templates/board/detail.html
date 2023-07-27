@@ -5,6 +5,7 @@
     <title>게시판 - 상세페이지</title>
     <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css"/>
 
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <script>
      window.onload = function(){
      let tableAnchor1 = document.querySelector('#list'); //선택자
@@ -14,12 +15,23 @@
      let parameter2 = window.location.href.split("/")[4].split("?")[1];
      tableAnchor1.href += "search?"+parameter;
      tableAnchor2.href += "?"+parameter2;
+
+     var text = document.querySelector("#textarea").textContent;
+     //text = text.replaceAll(/<br>/g, "\r\n");
+
      }
-    </script>
+</script>
 
 
 </head>
 <body>
+
+<style>
+.enter-show {
+    white-space: pre-line;
+}
+</style>
+
 <header th:insert="fragments/header.html"></header>
 <div class="container">
     <table class="table">
@@ -39,11 +51,12 @@
            <tr>
                 <th>조회수</th>
                 <td th:text = "${boardDto.hits}"></td>
-            </tr>
+           </tr>
 
             <tr>
                 <th>내용</th>
-                <td th:text="${boardDto.content}"></td>
+                <td class="enter-show" id = "textarea" th:text="${boardDto.content}"></td>
+<!--                <td id = "textarea" th:text="${boardDto.content}"></td>-->
             </tr>
 
         </tbody>

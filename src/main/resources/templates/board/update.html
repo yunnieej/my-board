@@ -11,6 +11,9 @@
     let parameter = window.location.href.split("?")[1];
     let final = tableAnchor += "?"+parameter;
     document.querySelector('#fm1').setAttribute('action',final);
+
+    var text = document.getElementById("textarea").value;
+    text = text.replaceAll("<br>", "\r\n");
     }
     </script>
 </head>
@@ -44,14 +47,17 @@
         <div class="form-group row">
             <label for="inputWriter" class="col-sm-2 col-form-label"><strong>작성자</strong></label>
             <div class="col-sm-10">
-                <input type="text" name="writer" class="form-control" id="inputWriter" th:value="${updateDto.writer}"/>
+<!--                <input type="text" maxlength="50" id="inputWriter" th:field="*{writer}" class="form-control" th:value="${updateDto.writer}"-->
+<!--                       th:class="${#fields.hasErrors('writer')}? 'form-control fieldError' : 'form-control'" disabled/>-->
+<!--                <p class="error-class" th:errors="*{writer}">Incorrect Data</p>-->
+                <input type="text" name="writer" class="form-control" id="inputWriter" th:value="${updateDto.writer}" readonly/>
             </div>
         </div>
 <!--        내용-->
         <div class="form-group row">
-            <label for="inputContent" class="col-sm-2 col-form-label"><strong>내용</strong></label>
+            <label for="textarea" class="col-sm-2 col-form-label"><strong>내용</strong></label>
             <div class="col-sm-10">
-                <textarea maxlength="500" type="text" id="inputContent" th:text="${updateDto.content}"
+                <textarea maxlength="500" type="text" id="textarea" rows = "10" th:text="${updateDto.content}"
                           th:field="*{content}" class="form-control" placeholder="내용을 입력하세요"
                           th:class="${#fields.hasErrors('content')}? 'form-control fieldError' : 'form-control'"></textarea>
                 <p class="error-class" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Incorrect Data</p>

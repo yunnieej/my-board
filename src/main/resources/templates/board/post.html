@@ -4,7 +4,15 @@
     <meta charset="UTF-8" />
     <title>게시판 - 글쓰기</title>
     <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css" />
+    <script>
+    window.onload = function(){
+    var text = document.getElementById("textarea").value;
+    //text = text.replace(/(/[\d\r\n]/g, '<br>');
+    $("#inputTitle").focus();
 
+
+    }
+    </script>
 </head>
 <body>
 
@@ -44,9 +52,9 @@
         </div>
 <!--        내용-->
         <div class="form-group row">
-            <label for="inputContent" class="col-sm-2 col-form-label"><strong>내용</strong></label>
+            <label for="textarea" class="col-sm-2 col-form-label"><strong>내용</strong></label>
             <div class="col-sm-10">
-                <textarea maxlength="500" type="text" id="inputContent" th:field="*{content}" class="form-control" placeholder="내용을 입력하세요"
+                <textarea id="textarea" maxlength="500" rows = "10" type="text" th:field="*{content}" class="form-control" placeholder="내용을 입력하세요"
                        th:class="${#fields.hasErrors('content')}? 'form-control fieldError' : 'form-control'"></textarea>
                 <p class="error-class" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Incorrect Data</p>
 <!--                <textarea type="text" name="content" class="form-control" id="inputContent" placeholder="내용을 입력하세요"></textarea>-->
