@@ -5,6 +5,20 @@
     <title>게시판 - 상세페이지</title>
     <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css"/>
 
+    <style>
+    .enter-show {
+         white-space: pre-line;
+    }
+
+    .container2 {
+        margin-top: 20px;
+    }
+
+    #commentWriter{
+        width: 30%;
+    }
+    </style>
+
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <script>
      window.onload = function(){
@@ -21,16 +35,9 @@
 
      }
 </script>
-
-
 </head>
-<body>
 
-<style>
-.enter-show {
-    white-space: pre-line;
-}
-</style>
+<body>
 
 <header th:insert="fragments/header.html"></header>
 <div class="container">
@@ -62,13 +69,37 @@
         </tbody>
     </table>
 </div>
-<div class = "row-">
-</div>
+<!--<div class = "row-">-->
+<!--</div>-->
 <div class="row">
     <div class="col text-center">
         <a id=update class="btn btn-dark" th:href="@{/post/update/{id}(id=${boardDto.id})}" role="button">수정</a>
         <a id=delete class="btn btn-dark" th:href="@{/post/delete/{id}(id=${boardDto.id})}" role="button">삭제</a>
-        <a id=list class="btn btn-dark" th:href="@{/}" role="button">목록으로 가기</a>
+        <a id=list class="btn btn-dark" th:href="@{/}" role="button">목록으로 가기</a><hr>
+    </div>
+</div>
+
+<div class="container2 container">
+    <strong>댓글 작성하기</strong><br><br>
+<!--        작성자-->
+    <div class = "row-">
+
+        <div class="form-group row">
+            <label for="commentWriter" class="col-sm-2 col-form-label"><strong>댓글 작성자</strong></label>
+            <div class="col-sm-10">
+                <input type="text" name="writer" class="form-control" id="commentWriter" placeholder="작성자를 입력하세요"/>
+            </div>
+        </div>
+        <!--        내용-->
+        <div class="form-group row">
+            <label for="commentContent" class="col-sm-2 col-form-label"><strong>댓글 내용</strong></label>
+            <div class="col-sm-10">
+                 <textarea type="text" name="content" class="form-control" id="commentContent" placeholder="내용을 입력하세요"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <button id="comment-write-btn" class="btn btn-dark float-right" onclick="commentWrite()">댓글작성</button>
+        </div>
     </div>
 </div>
 
