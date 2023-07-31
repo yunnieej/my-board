@@ -10,6 +10,8 @@ import project.myboard.dto.BoardUpdateDto;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Entity // db에 있는 table임을 명시함
@@ -38,6 +40,9 @@ public class BoardEntity extends BaseEntity{
     @Column
     private Long fileId;
 
+    @OneToMany(mappedBy="board", fetch=FetchType.LAZY)
+    private List<CommentEntity> comments = new ArrayList<CommentEntity>();
+
     @Builder
     public BoardEntity(Long id, String writer, String title, String content, Long fileId, int hits){
         this.id  = id;
@@ -57,9 +62,5 @@ public class BoardEntity extends BaseEntity{
     public void updateHits(){
         this.hits = this.hits+1;
     }
-
-//    public void minusHits(){
-//        this.hits = this.hits-1;
-//    }
 
 }

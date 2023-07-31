@@ -33,7 +33,7 @@
         $.ajax({
             // 요청 방식 : post, 요청 주소 : /post, 요청 데이터 : 작성자, 작성내, 게시글 번호
             type : "post",
-            url : "/save",
+            url : "/comment/save",
             data : {
             "commentWriter" : writer,
             "commentContent" : content,
@@ -41,13 +41,15 @@
             },
             success : function(res){
             console.log("요청 성공", res);
+
             },
             error : function(err){
             console.log("요청 실패", err);
             }
         });
-
     }
+
+
 
     window.onload = function(){
     let tableAnchor1 = document.querySelector('#list'); //선택자
