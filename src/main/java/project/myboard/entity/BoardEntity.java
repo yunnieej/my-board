@@ -1,4 +1,5 @@
 package project.myboard.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -40,6 +41,7 @@ public class BoardEntity extends BaseEntity{
     @Column
     private Long fileId;
 
+    @JsonIgnore
     @OneToMany(mappedBy="board", fetch=FetchType.LAZY)
     private List<CommentEntity> comments = new ArrayList<CommentEntity>();
 

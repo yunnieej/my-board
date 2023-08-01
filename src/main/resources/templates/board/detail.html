@@ -34,14 +34,70 @@
             // 요청 방식 : post, 요청 주소 : /post, 요청 데이터 : 작성자, 작성내, 게시글 번호
             type : "post",
             url : "/comment/save",
-            data : {
+            contentType: 'application/json',
+            data : JSON.stringify({
             "commentWriter" : writer,
             "commentContent" : content,
             "boardId" : id
-            },
+            }),
             success : function(res){
             console.log("요청 성공", res);
 
+            var html="";
+// <button id="comment-delete-btn" class="btn btn-dark float-right" onclick="commentDelete()">삭제</button>
+            function printComment(writer, content){
+                var get_html = '<tr id =' + 'commentList' + '>'
+                     + '<td id='
+                     + 'writerPrint'
+                     + '>'
+                     + writer
+                     + '</td>'
+                     + '<td id='
+                     + 'contentPrint'
+                     + '>'
+                     + content
+                     + '</td>'
+<!--                     + '<td id='-->
+<!--                     + 'buttonPrint'-->
+<!--                     + '>'-->
+<!--                     + '<button id='-->
+<!--                     + 'comment-delete-btn '-->
+<!--                     //+ '>'-->
+<!--                     + 'class.add('btn', 'btn-dark')'-->
+<!--                     + 'onclick='-->
+<!--                     + 'commentDelete()'-->
+<!--                     + '>'-->
+<!--                     + '삭제'-->
+<!--                     + '</button>'-->
+<!--                     + '</td>'-->
+                     + '</tr>';
+
+                return get_html;
+            }
+
+
+            for(let i in res){
+                $("#commentList").remove();
+                // $("#writerPrint").remove();
+                // $("#contentPrint").remove();
+
+                console.log("i:" , i);
+
+                var writer = res[i].commentWriter;
+                var content = res[i].commentContent;
+
+                html = html + printComment(writer, content);
+
+                //$('#writerPrint').html(writer);
+                //$('#contentPrint').html(content);
+                console.log("writer: ", writer);
+                console.log("content: ", content);
+
+            }
+
+                $(".commentListWrap").append(html);
+                document.getElementById('commentWriter').value = '';
+                document.getElementById('commentContent').value = '';
             },
             error : function(err){
             console.log("요청 실패", err);
@@ -49,11 +105,10 @@
         });
     }
 
-
-
     window.onload = function(){
     let tableAnchor1 = document.querySelector('#list'); //선택자
     let tableAnchor2 = document.querySelector('#update');
+
 
     let parameter = window.location.href.split("?")[1]; // 페이지 url
     let parameter2 = window.location.href.split("/")[4].split("?")[1];
@@ -105,11 +160,34 @@
     <div class="col text-center">
         <a id=update class="btn btn-dark" th:href="@{/post/update/{id}(id=${boardDto.id})}" role="button">수정</a>
         <a id=delete class="btn btn-dark" th:href="@{/post/delete/{id}(id=${boardDto.id})}" role="button">삭제</a>
-        <a id=list class="btn btn-dark" th:href="@{/}" role="button">목록으로 가기</a><hr>
+        <a id=list class="btn btn-dark" th:href="@{/}" role="button">목록으로 가기</a>
     </div>
 </div>
 
 <div class="container2 container">
+
+    <strong>댓글</strong><br><br>
+<!--        댓글 내용 출력-->
+        <div id = "comment_list" class="container">
+            <table class="table commentListWrap">
+                <tr>
+<!--                    <th>댓글번호</th>-->
+                    <th>댓글작성자</th>
+                    <th>댓글내용</th>
+<!--                    <th>작성시간</th>-->
+                </tr>
+                    <tr id="commentList" th:each="comment: ${commentList}">
+    <!--                    <td th:text="${comment.id}"></td>-->
+                        <td id="writerPrint" th:text="${comment.commentWriter}"></td>
+                        <td id="contentPrint" th:text="${comment.commentContent}"></td>
+                        <td id="buttonPrint">
+                            <button id="comment-delete-btn" class="btn btn-dark float-right" onclick="commentDelete()">삭제</button>
+                        </td>
+    <!--                    <td th:text="${comment.commentCreatedTime}"></td>-->
+                    </tr>
+            </table>
+        </div>
+
     <strong>댓글 작성하기</strong><br><br>
     <!--        작성자-->
     <div class = "row-">
@@ -128,9 +206,9 @@
                 <button id="comment-write-btn" class="btn btn-dark float-right" onclick="commentWrite()">댓글작성</button>
             </div>
         </div>
-        <div class="row">
-<!--            <button id="comment-write-btn" class="btn btn-dark float-right" onclick="commentWrite()">댓글작성</button>-->
-        </div>
+
+
+
     </div>
 </div>
 <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>

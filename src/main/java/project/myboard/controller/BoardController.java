@@ -13,7 +13,9 @@ import project.myboard.common.PagingConst;
 import project.myboard.dto.BoardRequestDto;
 import project.myboard.dto.BoardResponseDto;
 import project.myboard.dto.BoardUpdateDto;
+import project.myboard.dto.CommentDto;
 import project.myboard.service.BoardService;
+import project.myboard.service.CommentService;
 import project.myboard.service.FileService;
 import javax.validation.Valid;
 import java.util.List;
@@ -23,9 +25,13 @@ import java.util.UUID;
 public class BoardController {
     private final BoardService boardService;
     private final FileService fileService;
-    public BoardController(BoardService boardService, FileService fileService) {
+
+    private final CommentService commentService;
+
+    public BoardController(BoardService boardService, FileService fileService, CommentService commentService) {
         this.boardService = boardService;
         this.fileService = fileService;
+        this.commentService = commentService;
     }
 
     // 메인화면, 게시판 리스트들을 볼 수 있음
@@ -59,7 +65,9 @@ public class BoardController {
     @GetMapping("/post/{id}")
     public String findById(@PathVariable Long id, @RequestParam(value="page") String page, @RequestParam(value="keyword") String keyword, Model model){
         BoardResponseDto boardResponseDto = boardService.findById(id);
+        List<CommentDto> allComments = commentService.findAllComments(id);
         model.addAttribute("boardDto", boardResponseDto);
+        model.addAttribute("commentList", allComments);
         return "board/detail.html";
     }
 
