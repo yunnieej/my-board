@@ -1,6 +1,7 @@
 package project.myboard.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,33 @@ public class CommentController {
             return null;
         }
     }
+
+    @GetMapping("/delete")
+    public ResponseEntity delete(@RequestParam("id") Long id,
+                                     @RequestParam("boardId") Long boardId){
+        commentService.deleteComment(id);
+        System.out.println("삭제될 id : " + id);
+        System.out.println("해당 게시글 id : " + boardId);
+
+        List<CommentDto> allComments = commentService.findAllComments(boardId);
+        System.out.println(allComments);
+        return new ResponseEntity<>(allComments, HttpStatus.OK);
+
+    }
+
+    /***
+    @GetMapping("/delete")
+    public @ResponseBody void delete(@RequestParam("id") Long id,
+                                 @RequestParam("boardId") Long boardId){
+        commentService.deleteComment(id);
+        System.out.println("삭제될 id : " + id);
+        System.out.println("해당 게시글 id : " + boardId);
+
+//        List<CommentDto> allComments = commentService.findAllComments(boardId);
+//        return new ResponseEntity<>(allComments, HttpStatus.OK);
+
+    }
+*/
 
     /***
     @PostMapping("/save")

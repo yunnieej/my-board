@@ -48,18 +48,15 @@
 
             for(let i in res){
                 $("#commentList").remove();
-                // $("#writerPrint").remove();
-                // $("#contentPrint").remove();
-
-                console.log("i:" , i);
                 var c_id = res[i].id;
                 var writer = res[i].commentWriter;
                 var content = res[i].commentContent;
 
                 function printComment(c_id, writer, content){
                     var get_html = '<tr id =' + 'commentList' + '>'
+                         //+ '<tr th:id=' + c_id + '>'
                          + '<td id='
-                         + 'commentId'
+                         + 'IdPrint'
                          + '>'
                          + c_id
                          + '</td>'
@@ -77,15 +74,17 @@
                          + 'buttonPrint'
                          + '>'
                          + '<button id='
-                         + 'comment-delete-btn '
-                         + 'class='
+                         //+ 'comment-delete-btn '
+                         + c_id
+                         + ' class='
                          + '"btn btn-dark float-right"'
                          + 'onclick='
-                         + 'commentDelete()'
+                         + 'commentDelete(this.id)'
                          + '>'
                          + '댓글삭제'
                          + '</button>'
                          + '</td>'
+                         + '</tr>'
                          + '</tr>';
 
                 return get_html;
@@ -93,17 +92,15 @@
 
                 html = html + printComment(c_id, writer, content);
 
-                //$('#writerPrint').html(writer);
-                //$('#contentPrint').html(content);
                 console.log("id: ", c_id);
                 console.log("writer: ", writer);
                 console.log("content: ", content);
 
             }
-
                 $(".commentListWrap").append(html);
                 document.getElementById('commentWriter').value = '';
                 document.getElementById('commentContent').value = '';
+
             },
             error : function(err){
             console.log("요청 실패", err);
@@ -111,9 +108,84 @@
         });
     }
 
-   const commentDelete = () => {
-    const delete_c_id =
+   const commentDelete = (clicked_id) => {
+       const id = [[${boardDto.id}]];
+       const delete_id = clicked_id;
+       console.log("delete id : " , delete_id);
 
+       $.ajax({
+           type : "get",
+           url : "/comment/delete",
+           data : {
+           "id" : delete_id,
+           "boardId" : id
+           },
+           success : function(res){
+           console.log("요청 성공", res);
+
+           var html="";
+
+            for(let i in res){
+                $("#commentList").remove();
+                var c_id = res[i].id;
+                var writer = res[i].commentWriter;
+                var content = res[i].commentContent;
+
+                function printComment(c_id, writer, content){
+                    var get_html = '<tr id =' + 'commentList' + '>'
+                         //+ '<tr th:id=' + c_id + '>'
+                         + '<td id='
+                         + 'IdPrint'
+                         + '>'
+                         + c_id
+                         + '</td>'
+                         + '<td id='
+                         + 'writerPrint'
+                         + '>'
+                         + writer
+                         + '</td>'
+                         + '<td id='
+                         + 'contentPrint'
+                         + '>'
+                         + content
+                         + '</td>'
+                         + '<td id='
+                         + 'buttonPrint'
+                         + '>'
+                         + '<button id='
+                         //+ 'comment-delete-btn '
+                         + c_id
+                         + ' class='
+                         + '"btn btn-dark float-right"'
+                         + 'onclick='
+                         + 'commentDelete(this.id)'
+                         + '>'
+                         + '댓글삭제'
+                         + '</button>'
+                         + '</td>'
+                         + '</tr>'
+                         + '</tr>';
+
+                return get_html;
+            }
+
+                html = html + printComment(c_id, writer, content);
+
+                console.log("id: ", c_id);
+                console.log("writer: ", writer);
+                console.log("content: ", content);
+
+            }
+                $(".commentListWrap").append(html);
+                document.getElementById('commentWriter').value = '';
+                document.getElementById('commentContent').value = '';
+
+           },
+           error : function(res){
+           console.log("요청 실패", err);
+           }
+
+       });
    }
 
     window.onload = function(){
@@ -187,15 +259,17 @@
                     <th>댓글내용</th>
 <!--                    <th>작성시간</th>-->
                 </tr>
-                    <tr id="commentList" th:each="comment: ${commentList}">
-                        <td id="commentId" th:text="${comment.id}"></td>
+
+                <tr id="commentList" th:each="comment: ${commentList}">
+<!--                    <tr th:id="${comment.id}">-->
+                        <td id="IdPrint" th:text="${comment.id}"></td>
                         <td id="writerPrint" th:text="${comment.commentWriter}"></td>
                         <td id="contentPrint" th:text="${comment.commentContent}"></td>
                         <td id="buttonPrint">
-                            <button id="comment-delete-btn" class="btn btn-dark float-right" onclick="commentDelete()">댓글삭제</button>
+                            <button th:id="${comment.id}" class="btn btn-dark float-right" onclick="commentDelete(this.id)">댓글삭제</button>
                         </td>
-    <!--                    <td th:text="${comment.commentCreatedTime}"></td>-->
-                    </tr>
+<!--                    </tr>-->
+                </tr>
             </table>
         </div>
 
