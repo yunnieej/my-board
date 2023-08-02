@@ -42,7 +42,8 @@ public class BoardEntity extends BaseEntity{
     private Long fileId;
 
     @JsonIgnore
-    @OneToMany(mappedBy="board", fetch=FetchType.LAZY)
+    @OneToMany(mappedBy="board", fetch=FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OrderBy("id desc")
     private List<CommentEntity> comments = new ArrayList<CommentEntity>();
 
     @Builder

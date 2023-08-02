@@ -28,6 +28,7 @@ public class CommentService {
         BoardEntity boardEntity = boardRepository.findById(commentDto.getBoardId()).get();
         CommentEntity commentEntity = commentDto.toEntity(boardEntity);
         CommentEntity saveEntity = commentRepository.save(commentEntity);
+
         /***
         BoardEntity boardEntity = boardRepository.findById(commentDto.getBoardId()).get(); //boardId에 해당하는 boardEntity 가져옴.
         CommentEntity commentEntity = new CommentEntity(commentDto.getCommentWriter(), commentDto.getCommentContent(), boardEntity);
