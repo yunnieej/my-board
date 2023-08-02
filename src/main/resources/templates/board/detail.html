@@ -124,8 +124,8 @@
            console.log("요청 성공", res);
 
            var html="";
-
-            for(let i in res){
+           $("#commentList").remove();
+           for(let i in res){
                 $("#commentList").remove();
                 var c_id = res[i].id;
                 var writer = res[i].commentWriter;
