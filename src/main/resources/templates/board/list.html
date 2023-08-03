@@ -82,9 +82,10 @@
             </tr>
             </thead>
             <tbody>
-                <tr class="text-center" th:if= "${not #lists.isEmpty(boardList)}" th:each="board : ${boardList}">
+                <tr class="text-center" th:if= "${not #lists.isEmpty(boardList)}" th:each="board, loop : ${boardList}">
                     <th scope="row">
-                        <span th:text="${board.id}"></span>
+                        <span th:text="${boardList.getTotalElements - (boardList.number * boardList.size) - loop.index}"></span>
+<!--                        <span th:text="${board.id}"></span>-->
                     </th>
                     <td>
 <!--                        상세게시글(제목 누르기)-->

@@ -49,6 +49,7 @@
             for(let i in res){
                 $("#commentList").remove();
                 var c_id = res[i].id;
+                //var c_id = i+1;
                 var writer = res[i].commentWriter;
                 var content = res[i].commentContent;
 
@@ -128,6 +129,7 @@
            for(let i in res){
                 $("#commentList").remove();
                 var c_id = res[i].id;
+                //var c_id = ;
                 var writer = res[i].commentWriter;
                 var content = res[i].commentContent;
 
@@ -262,6 +264,7 @@
 
                 <tr id="commentList" th:each="comment: ${commentList}">
 <!--                    <tr th:id="${comment.id}">-->
+<!--                        <td id="IdPrint" th:text="${lists.size(Arr) - (commentList.number * commentList.size) - loop.index}"></td>-->
                         <td id="IdPrint" th:text="${comment.id}"></td>
                         <td id="writerPrint" th:text="${comment.commentWriter}"></td>
                         <td id="contentPrint" th:text="${comment.commentContent}"></td>

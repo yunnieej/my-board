@@ -1,10 +1,7 @@
 package project.myboard.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import net.bytebuddy.asm.Advice;
 import project.myboard.dto.BoardRequestDto;
 import project.myboard.dto.BoardUpdateDto;
@@ -45,6 +42,7 @@ public class BoardEntity extends BaseEntity{
     @OneToMany(mappedBy="board", fetch=FetchType.LAZY, cascade = CascadeType.REMOVE)
     @OrderBy("id desc")
     private List<CommentEntity> comments = new ArrayList<CommentEntity>();
+
 
     @Builder
     public BoardEntity(Long id, String writer, String title, String content, Long fileId, int hits){
