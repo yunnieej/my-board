@@ -56,11 +56,11 @@
                 function printComment(c_id, writer, content){
                     var get_html = '<tr id =' + 'commentList' + '>'
                          //+ '<tr th:id=' + c_id + '>'
-                         + '<td id='
-                         + 'IdPrint'
-                         + '>'
-                         + c_id
-                         + '</td>'
+                         //+ '<td id='
+                         //+ 'IdPrint'
+                         //+ '>'
+                         //+ c_id
+                         //+ '</td>'
                          + '<td id='
                          + 'writerPrint'
                          + '>'
@@ -136,11 +136,11 @@
                 function printComment(c_id, writer, content){
                     var get_html = '<tr id =' + 'commentList' + '>'
                          //+ '<tr th:id=' + c_id + '>'
-                         + '<td id='
-                         + 'IdPrint'
-                         + '>'
-                         + c_id
-                         + '</td>'
+                         //+ '<td id='
+                         //+ 'IdPrint'
+                         //+ '>'
+                         //+ c_id
+                         //+ '</td>'
                          + '<td id='
                          + 'writerPrint'
                          + '>'
@@ -256,16 +256,16 @@
         <div id = "comment_list" class="container">
             <table class="table commentListWrap">
                 <tr>
-                    <th>댓글번호</th>
+<!--                    <th>댓글번호</th>-->
                     <th>댓글작성자</th>
                     <th>댓글내용</th>
 <!--                    <th>작성시간</th>-->
                 </tr>
 
-                <tr id="commentList" th:each="comment: ${commentList}">
+                <tr id="commentList" th:each="comment, count: ${commentList}">
 <!--                    <tr th:id="${comment.id}">-->
 <!--                        <td id="IdPrint" th:text="${lists.size(Arr) - (commentList.number * commentList.size) - loop.index}"></td>-->
-                        <td id="IdPrint" th:text="${comment.id}"></td>
+<!--                        <td id="IdPrint" th:text="${comment.id}"></td>-->
                         <td id="writerPrint" th:text="${comment.commentWriter}"></td>
                         <td id="contentPrint" th:text="${comment.commentContent}"></td>
                         <td id="buttonPrint">
