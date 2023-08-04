@@ -22,6 +22,48 @@
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <script th:inline="javascript">
 
+    function timeFormat(time){
+         var time = time.replace("T", " ");
+         return time;
+    }
+
+    function printComment(c_id, writer, content, new_time){
+                    var get_html = '<tr id =' + 'commentList' + '>'
+                         + '<td id='
+                         + 'writerPrint'
+                         + '>'
+                         + writer
+                         + '</td>'
+                         + '<td id='
+                         + 'contentPrint'
+                         + '>'
+                         + content
+                         + '</td>'
+                         + '<td id='
+                         + 'timePrint'
+                         + '>'
+                         + new_time
+                         + '</td>'
+                         + '<td id='
+                         + 'buttonPrint'
+                         + '>'
+                         + '<button id='
+                         //+ 'comment-delete-btn '
+                         + c_id
+                         + ' class='
+                         + '"btn btn-dark float-right"'
+                         + 'onclick='
+                         + 'commentDelete(this.id)'
+                         + '>'
+                         + '댓글삭제'
+                         + '</button>'
+                         + '</td>'
+                         + '</tr>'
+                         + '</tr>';
+
+                return get_html;
+    }
+
     const commentWrite = () => {
         const id = [[${boardDto.id}]];
         const writer = document.getElementById('commentWriter').value;
@@ -52,46 +94,10 @@
                 //var c_id = i+1;
                 var writer = res[i].commentWriter;
                 var content = res[i].commentContent;
+                var time = res[i].createdTime;
+                var new_time = timeFormat(time);
 
-                function printComment(c_id, writer, content){
-                    var get_html = '<tr id =' + 'commentList' + '>'
-                         //+ '<tr th:id=' + c_id + '>'
-                         //+ '<td id='
-                         //+ 'IdPrint'
-                         //+ '>'
-                         //+ c_id
-                         //+ '</td>'
-                         + '<td id='
-                         + 'writerPrint'
-                         + '>'
-                         + writer
-                         + '</td>'
-                         + '<td id='
-                         + 'contentPrint'
-                         + '>'
-                         + content
-                         + '</td>'
-                         + '<td id='
-                         + 'buttonPrint'
-                         + '>'
-                         + '<button id='
-                         //+ 'comment-delete-btn '
-                         + c_id
-                         + ' class='
-                         + '"btn btn-dark float-right"'
-                         + 'onclick='
-                         + 'commentDelete(this.id)'
-                         + '>'
-                         + '댓글삭제'
-                         + '</button>'
-                         + '</td>'
-                         + '</tr>'
-                         + '</tr>';
-
-                return get_html;
-            }
-
-                html = html + printComment(c_id, writer, content);
+                html = html + printComment(c_id, writer, content, new_time);
 
                 console.log("id: ", c_id);
                 console.log("writer: ", writer);
@@ -125,53 +131,18 @@
            console.log("요청 성공", res);
 
            var html="";
+
            $("#commentList").remove();
+
            for(let i in res){
                 $("#commentList").remove();
                 var c_id = res[i].id;
-                //var c_id = ;
                 var writer = res[i].commentWriter;
                 var content = res[i].commentContent;
+                var time = res[i].createdTime;
+                var new_time = timeFormat(time);
 
-                function printComment(c_id, writer, content){
-                    var get_html = '<tr id =' + 'commentList' + '>'
-                         //+ '<tr th:id=' + c_id + '>'
-                         //+ '<td id='
-                         //+ 'IdPrint'
-                         //+ '>'
-                         //+ c_id
-                         //+ '</td>'
-                         + '<td id='
-                         + 'writerPrint'
-                         + '>'
-                         + writer
-                         + '</td>'
-                         + '<td id='
-                         + 'contentPrint'
-                         + '>'
-                         + content
-                         + '</td>'
-                         + '<td id='
-                         + 'buttonPrint'
-                         + '>'
-                         + '<button id='
-                         //+ 'comment-delete-btn '
-                         + c_id
-                         + ' class='
-                         + '"btn btn-dark float-right"'
-                         + 'onclick='
-                         + 'commentDelete(this.id)'
-                         + '>'
-                         + '댓글삭제'
-                         + '</button>'
-                         + '</td>'
-                         + '</tr>'
-                         + '</tr>';
-
-                return get_html;
-            }
-
-                html = html + printComment(c_id, writer, content);
+                html = html + printComment(c_id, writer, content, new_time);
 
                 console.log("id: ", c_id);
                 console.log("writer: ", writer);
@@ -259,19 +230,19 @@
 <!--                    <th>댓글번호</th>-->
                     <th>댓글작성자</th>
                     <th>댓글내용</th>
-<!--                    <th>작성시간</th>-->
+                    <th>작성시간</th>
                 </tr>
 
                 <tr id="commentList" th:each="comment, count: ${commentList}">
-<!--                    <tr th:id="${comment.id}">-->
 <!--                        <td id="IdPrint" th:text="${lists.size(Arr) - (commentList.number * commentList.size) - loop.index}"></td>-->
 <!--                        <td id="IdPrint" th:text="${comment.id}"></td>-->
-                        <td id="writerPrint" th:text="${comment.commentWriter}"></td>
-                        <td id="contentPrint" th:text="${comment.commentContent}"></td>
-                        <td id="buttonPrint">
-                            <button th:id="${comment.id}" class="btn btn-dark float-right" onclick="commentDelete(this.id)">댓글삭제</button>
-                        </td>
-<!--                    </tr>-->
+                    <td id="writerPrint" th:text="${comment.commentWriter}"></td>
+                    <td id="contentPrint" th:text="${comment.commentContent}"></td>
+                    <td id="timePrint" th:text="${#temporals.format(comment.createdTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td id="buttonPrint">
+                        <button th:id="${comment.id}" class="btn btn-dark float-right" onclick="commentDelete(this.id)">댓글삭제</button>
+                    </td>
+
                 </tr>
             </table>
         </div>

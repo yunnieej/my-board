@@ -49,6 +49,7 @@ public class CommentService {
                     .commentWriter(comment.getWriter())
                     .commentContent(comment.getContent())
                     .boardId(comment.getBoard().getId())
+                    .createdTime(comment.getCreatedTime())
                     .board(comment.getBoard())
                     .build();
             byBoardIdDto.add(commentDto);
