@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @Setter
 public class BoardRequestDto {
 
-
     @NotBlank(message = "작성자는 필수 입력 항목입니다.")
     private String writer;
 

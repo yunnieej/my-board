@@ -157,7 +157,6 @@
            error : function(res){
            console.log("요청 실패", err);
            }
-
        });
    }
 
@@ -204,14 +203,12 @@
             <tr>
                 <th>내용</th>
                 <td class="enter-show" id = "textarea" th:text="${boardDto.content}"></td>
-<!--                <td id = "textarea" th:text="${boardDto.content}"></td>-->
             </tr>
 
         </tbody>
     </table>
 </div>
-<!--<div class = "row-">-->
-<!--</div>-->
+
 <div class="row">
     <div class="col text-center">
         <a id=update class="btn btn-dark" th:href="@{/post/update/{id}(id=${boardDto.id})}" role="button">수정</a>
@@ -221,28 +218,23 @@
 </div>
 
 <div class="container2 container">
-
     <strong>댓글</strong><br><br>
 <!--        댓글 내용 출력-->
         <div id = "comment_list" class="container">
             <table class="table commentListWrap">
                 <tr>
-<!--                    <th>댓글번호</th>-->
                     <th>댓글작성자</th>
                     <th>댓글내용</th>
                     <th>작성시간</th>
                 </tr>
 
                 <tr id="commentList" th:each="comment, count: ${commentList}">
-<!--                        <td id="IdPrint" th:text="${lists.size(Arr) - (commentList.number * commentList.size) - loop.index}"></td>-->
-<!--                        <td id="IdPrint" th:text="${comment.id}"></td>-->
                     <td id="writerPrint" th:text="${comment.commentWriter}"></td>
                     <td id="contentPrint" th:text="${comment.commentContent}"></td>
                     <td id="timePrint" th:text="${#temporals.format(comment.createdTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td id="buttonPrint">
                         <button th:id="${comment.id}" class="btn btn-dark float-right" onclick="commentDelete(this.id)">댓글삭제</button>
                     </td>
-
                 </tr>
             </table>
         </div>

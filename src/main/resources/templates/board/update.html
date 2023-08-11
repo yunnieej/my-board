@@ -40,16 +40,12 @@
                 <input type="text" maxlength="50" id="inputTitle" th:field="*{title}" class="form-control" placeholder="제목을 입력하세요"
                        th:class="${#fields.hasErrors('title')}? 'form-control fieldError' : 'form-control'">
                 <p class="error-class" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Incorrect Data</p>
-<!--                <input type="text" name="title" class="form-control" id="inputTitle" th:value="${boardDto?.title}"/>-->
             </div>
         </div>
 <!--        작성자-->
         <div class="form-group row">
             <label for="inputWriter" class="col-sm-2 col-form-label"><strong>작성자</strong></label>
             <div class="col-sm-10">
-<!--                <input type="text" maxlength="50" id="inputWriter" th:field="*{writer}" class="form-control" th:value="${updateDto.writer}"-->
-<!--                       th:class="${#fields.hasErrors('writer')}? 'form-control fieldError' : 'form-control'" disabled/>-->
-<!--                <p class="error-class" th:errors="*{writer}">Incorrect Data</p>-->
                 <input type="text" name="writer" class="form-control" id="inputWriter" th:value="${updateDto.writer}" readonly/>
             </div>
         </div>
@@ -61,7 +57,6 @@
                           th:field="*{content}" class="form-control" placeholder="내용을 입력하세요"
                           th:class="${#fields.hasErrors('content')}? 'form-control fieldError' : 'form-control'"></textarea>
                 <p class="error-class" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Incorrect Data</p>
-<!--                <textarea type="text" name="content" class="form-control" id="inputContent" th:value="${boardDto?.content}" th:text="${boardDto?.content}"></textarea>-->
             </div>
         </div>
         <div class="row">
@@ -69,8 +64,6 @@
             <div class="col-auto">
 <!--                데이터 수정 가능-->
                 <button id=update_btn type="submit" class="btn btn-dark">수정</button>
-<!--                데이터 수정 가능(url 대체 불가)-->
-<!--                <input id=update_btn class="btn btn-dark" type="submit" role="button" value="수정" />-->
             </div>
         </div>
     </form>

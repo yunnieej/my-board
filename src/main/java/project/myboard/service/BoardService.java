@@ -28,7 +28,6 @@ public class BoardService {
         boardRepository.save(boardRequestDto.toEntity());
     }
 
-
     // pageable 전 전체 리스트 보기
     @Transactional
     public List<BoardResponseDto> findAll(){
@@ -74,29 +73,7 @@ public class BoardService {
 
         return allDto;
     }
-/***
-    // pageable 후 전체 리스트 보기
-    @Transactional
-    public Page<BoardResponseDto> findPage(Pageable pageable){
-        int page = (pageable.getPageNumber() == 0 ? 0 : (pageable.getPageNumber()-1));
 
-        Page<BoardEntity> all = boardRepository.findAll(PageRequest.of(page, 5, Sort.Direction.DESC, "id"));
-//        Page<BoardEntity> all = boardRepository.findAll(pageable);
-        // new PageImpl<BoardResponseDto>(list, PageRequest.of(currentPage, pageSize), all.size());
-        Page<BoardResponseDto> allDto = all.map(m -> BoardResponseDto.builder()
-                .id(m.getId())
-                .writer(m.getWriter())
-                .title(m.getTitle())
-                .content(m.getContent())
-                .createdTime(m.getCreatedTime())
-                .modifiedTime(m.getModifiedTime())
-                .hits(m.getHits())
-                .build());
-
-        return allDto;
-    }
-
-*/
     // 상세 게시글 보기
     @Transactional
     public BoardResponseDto findById(Long id){
@@ -160,38 +137,12 @@ public class BoardService {
         boardRepository.deleteById(id);
     }
 
-/***
-    //keyword로 검색
-    @Transactional
-    public List<BoardResponseDto> searchByKeyword(String keyword){
-        List<BoardEntity> boardEntities = boardRepository.findByTitleContaining(keyword);
-        ArrayList<BoardResponseDto> boardResponseDtos = new ArrayList<>();
-        // dto로 변환해서 arrayList에 넣는 작업
-        for (BoardEntity board : boardEntities){
-
-            BoardResponseDto boardResponseDto = BoardResponseDto.builder()
-                    .id(board.getId())
-                    .writer(board.getWriter())
-                    .title(board.getTitle())
-                    .content(board.getContent())
-                    .createdTime(board.getCreatedTime())
-                    .modifiedTime(board.getModifiedTime())
-                    .hits(board.getHits())
-                    .build();
-
-            boardResponseDtos.add(boardResponseDto); // 변환된 것 하나씩 넣기
-        }
-        return boardResponseDtos;
-
-    }
-*/
-
     @Transactional
     public Page<BoardResponseDto> searchByKeyword(String keyword, Pageable pageable){
         // pageable의 페이지 -> 0부터 시작. 사용자가 보려는 페이지에서 1 빼야함.
         // 페이지를 0부터 관리하기 때문에 1페이지를 요청하려면 0을, 4페이지를 요청하려면 3을 요청해야합니다.
         int page = (pageable.getPageNumber() == 0 ? 0 : (pageable.getPageNumber()-1));
-//        int page = pageable.getPageNumber()-1;
+
         Page<BoardEntity> byTitleContainingPage = boardRepository.findByTitleContaining(keyword, PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.Direction.DESC, "id"));
 
         Page<BoardResponseDto> allDto = byTitleContainingPage.map(m -> BoardResponseDto.builder()

@@ -11,7 +11,6 @@ import project.myboard.repository.CommentRepository;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor // 생성자 생성
@@ -21,7 +20,6 @@ public class CommentService {
 
     @Transactional
     public Long saveComment(CommentDto commentDto) throws Exception{
-//        commentRepository.save(commentDto.toEntity(commentDto));
         if(commentDto.getCommentWriter() == "" && commentDto.getCommentContent() == ""){
             throw new Exception("작성자나 내용이 존재하지 않습니다.");
         }
@@ -29,11 +27,6 @@ public class CommentService {
         CommentEntity commentEntity = commentDto.toEntity(boardEntity);
         CommentEntity saveEntity = commentRepository.save(commentEntity);
 
-        /***
-        BoardEntity boardEntity = boardRepository.findById(commentDto.getBoardId()).get(); //boardId에 해당하는 boardEntity 가져옴.
-        CommentEntity commentEntity = new CommentEntity(commentDto.getCommentWriter(), commentDto.getCommentContent(), boardEntity);
-        CommentEntity saveEntity = commentRepository.save(commentEntity);
-*/
         return saveEntity.getId();
     }
 

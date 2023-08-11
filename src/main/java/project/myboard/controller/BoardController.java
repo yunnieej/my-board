@@ -7,9 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import project.myboard.common.PagingConst;
 import project.myboard.dto.BoardRequestDto;
 import project.myboard.dto.BoardResponseDto;
 import project.myboard.dto.BoardUpdateDto;
@@ -19,13 +17,11 @@ import project.myboard.service.CommentService;
 import project.myboard.service.FileService;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 public class BoardController {
     private final BoardService boardService;
     private final FileService fileService;
-
     private final CommentService commentService;
 
     public BoardController(BoardService boardService, FileService fileService, CommentService commentService) {
@@ -113,18 +109,9 @@ public class BoardController {
     @GetMapping("/search")
     public String searchByKeyword(@RequestParam(value="keyword") String keyword, Model model, @PageableDefault Pageable pageable){
         Page<BoardResponseDto> boardList = boardService.searchByKeyword(keyword, pageable);
-//        System.out.println(boardList.getTotalElements());
-//
-//        if(boardList.getTotalElements() == 0){
-//            model.addAttribute("message", "해당 게시글이 없습니다.");}
 
         model.addAttribute("boardList", boardList); //keyword pageable의 page 넘어옴
         model.addAttribute("boardCount", boardList.getTotalElements());
-
-//        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / PagingConst.BLOCK_LIMIT))) - 1) * PagingConst.BLOCK_LIMIT + 1;
-//        int endPage = ((startPage + PagingConst.BLOCK_LIMIT-1)< boardList.getTotalPages())?startPage + PagingConst.BLOCK_LIMIT -1 : boardList.getTotalPages();
-//        model.addAttribute("startPage",startPage);
-//        model.addAttribute("endPage",endPage);
 
         return "board/list.html";
     }
